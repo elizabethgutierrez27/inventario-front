@@ -16,9 +16,8 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  // Paso 1: Login
   onLogin() {
-    console.log('[LoginComponent] Intentando login con:', { correo: this.correo, password: this.password });
-
     if (!this.correo || !this.password) {
       this.mensaje = 'Por favor ingresa correo y contraseña.';
       return;
@@ -29,16 +28,9 @@ export class LoginComponent {
         console.log('[LoginComponent] Respuesta del servidor:', res);
 
         if (res.codigo === 0) {
-          // Sesión activa detectada
-          if (res.mensaje === 'Sesión sigue activa') {
-            const rol = res.usuario?.rol;
-            this.mensaje = `Sesión ya activa para ${this.correo}. Redirigiendo...`;
-
-            if (rol === 'admin') {
-              this.router.navigate(['/admin']);
-            } else {
-              this.router.navigate(['/personal']);
-            }
+          // Sesión ya activa
+          if (res.mensaje.includes('Ya existe una sesión activa')) {
+            this.guardarTokenYRedirigir(res.token);
             return; // No mostrar formulario de código
           }
 
@@ -56,6 +48,7 @@ export class LoginComponent {
     });
   }
 
+  // Paso 2: Verificar código de verificación
   onVerificarCodigo() {
     if (!this.codigo) {
       this.mensaje = 'Por favor ingresa el código de verificación.';
@@ -67,16 +60,7 @@ export class LoginComponent {
         console.log('[LoginComponent] Respuesta verificación:', res);
 
         if (res.codigo === 0) {
-          const token = res.token;
-          localStorage.setItem('token', token);
-          this.mensaje = 'Verificación exitosa. Redirigiendo...';
-
-          const rol = res.usuario?.rol;
-          if (rol === 'admin') {
-            this.router.navigate(['/admin']);
-          } else {
-            this.router.navigate(['/personal']);
-          }
+          this.guardarTokenYRedirigir(res.token);
         } else {
           this.mensaje = res.error?.mensaje || 'Código incorrecto.';
         }
@@ -86,5 +70,24 @@ export class LoginComponent {
         this.mensaje = 'Ocurrió un error en el servidor.';
       }
     });
+  }
+
+  // Función para guardar token y redirigir según rol
+  private guardarTokenYRedirigir(token: string) {
+    localStorage.setItem('token', token);
+
+    // Decodificar JWT sin librerías externas
+    const payloadBase64 = token.split('.')[1];
+    const payloadJson = atob(payloadBase64);
+    const payload = JSON.parse(payloadJson);
+
+    const rol = payload.rol;
+    this.mensaje = `Sesión iniciada como ${rol}. Redirigiendo...`;
+
+    if (rol === 'admin') {
+      this.router.navigate(['/admin']);
+    } else {
+      this.router.navigate(['/personal']);
+    }
   }
 }
