@@ -16,7 +16,6 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // Paso 1: Login
   onLogin() {
     if (!this.correo || !this.password) {
       this.mensaje = 'Por favor ingresa correo y contraseña.';
@@ -28,13 +27,11 @@ export class LoginComponent {
         console.log('[LoginComponent] Respuesta del servidor:', res);
 
         if (res.codigo === 0) {
-          // Sesión ya activa
           if (res.mensaje.includes('Ya existe una sesión activa')) {
             this.guardarTokenYRedirigir(res.token);
-            return; // No mostrar formulario de código
+            return;
           }
 
-          // Caso normal: enviar código de verificación
           this.mensaje = 'Código de verificación enviado a tu correo.';
           this.pasoCodigo = true;
         } else {
@@ -48,7 +45,6 @@ export class LoginComponent {
     });
   }
 
-  // Paso 2: Verificar código de verificación
   onVerificarCodigo() {
     if (!this.codigo) {
       this.mensaje = 'Por favor ingresa el código de verificación.';
@@ -72,11 +68,9 @@ export class LoginComponent {
     });
   }
 
-  // Función para guardar token y redirigir según rol
   private guardarTokenYRedirigir(token: string) {
     localStorage.setItem('token', token);
 
-    // Decodificar JWT sin librerías externas
     const payloadBase64 = token.split('.')[1];
     const payloadJson = atob(payloadBase64);
     const payload = JSON.parse(payloadJson);

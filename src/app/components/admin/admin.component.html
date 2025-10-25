@@ -1,1 +1,19 @@
-<p>admin works!</p>
+<div class="admin-container-pizzeria">
+  <nav class="navbar-pizzeria">
+    <div class="logo">🍕 Pizzeria Admin</div>
+    <ul class="navbar-menu">
+      <li><a routerLink="/admin/productos">Registro de Productos</a></li>
+      <li><a routerLink="/admin/bitacora">Bitácora</a></li>
+      <li><a routerLink="/admin/reportes">Dashboards / Reportes</a></li>
+      <li><a routerLink="/admin/usuarios">Registro de Usuarios</a></li>
+    </ul>
+    <div class="navbar-end">
+      <button (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </nav>
+
+  <div class="welcome">
+    <h1>Bienvenido, Administrador</h1>
+    <p>Desde aquí puedes gestionar productos, usuarios y reportes de tu pizzería.</p>
+  </div>
+</div>
