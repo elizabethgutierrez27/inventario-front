@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { NgChartsModule } from 'ng2-charts';
+import { RouterModule } from '@angular/router';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,12 +35,15 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgChartsModule,
+    RouterModule
   ],
-  providers: [
-    provideClientHydration(),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
+providers: [
+  provideClientHydration(),
+  provideHttpClient(withFetch()),
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

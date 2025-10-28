@@ -1,64 +1,22 @@
 <div class="reportes-container">
-
   <app-barra></app-barra>
 
-  <!-- Header de Reportes -->
   <header class="reportes-header">
     <div class="header-content">
       <div class="header-text">
         <h1>📊 Reportes y Análisis</h1>
         <p>Visualiza y analiza el rendimiento de tu inventario</p>
       </div>
-      <div class="header-actions">
-        <button class="btn-filter">
-          <span class="btn-icon">🔍</span>
-          Filtros
-        </button>
-        <button class="btn-export">
-          <span class="btn-icon">📥</span>
-          Exportar
-        </button>
-        <button class="btn-date">
-          <span class="btn-icon">📅</span>
-          Este Mes
-        </button>
-      </div>
     </div>
   </header>
 
-  <!-- Filtros Rápidos -->
-  <section class="quick-filters">
-    <button class="filter-chip active">Hoy</button>
-    <button class="filter-chip">Esta Semana</button>
-    <button class="filter-chip">Este Mes</button>
-    <button class="filter-chip">Último Trimestre</button>
-    <button class="filter-chip">Este Año</button>
-    <button class="filter-chip custom">Personalizado</button>
-  </section>
-
-  <!-- KPIs Principales -->
+  <!-- KPIs principales -->
   <section class="kpis-section">
     <div class="kpi-card primary">
       <div class="kpi-icon">💰</div>
       <div class="kpi-content">
         <span class="kpi-label">Valor Total Inventario</span>
-        <h2 class="kpi-value">$45,230.00</h2>
-        <div class="kpi-change positive">
-          <span class="arrow">↑</span>
-          <span>+12.5% vs mes anterior</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="kpi-card success">
-      <div class="kpi-icon">📈</div>
-      <div class="kpi-content">
-        <span class="kpi-label">Productos Más Vendidos</span>
-        <h2 class="kpi-value">1,248</h2>
-        <div class="kpi-change positive">
-          <span class="arrow">↑</span>
-          <span>+8.3% esta semana</span>
-        </div>
+        <h2 class="kpi-value">{{ formatoMoneda(valorInventario) }}</h2>
       </div>
     </div>
 
@@ -66,408 +24,84 @@
       <div class="kpi-icon">⚠️</div>
       <div class="kpi-content">
         <span class="kpi-label">Productos Bajo Stock</span>
-        <h2 class="kpi-value">12</h2>
-        <div class="kpi-change neutral">
-          <span>Requieren atención</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="kpi-card info">
-      <div class="kpi-icon">📦</div>
-      <div class="kpi-content">
-        <span class="kpi-label">Total Movimientos</span>
-        <h2 class="kpi-value">342</h2>
-        <div class="kpi-change positive">
-          <span class="arrow">↑</span>
-          <span>+15.2% hoy</span>
-        </div>
+        <h2 class="kpi-value">{{ bajoStock.length }}</h2>
       </div>
     </div>
   </section>
 
-  <!-- Gráficas Principales -->
-  <section class="charts-grid">
-    <!-- Gráfica de Movimientos -->
-    <div class="chart-card large">
-      <div class="chart-header">
-        <div>
-          <h3>Movimientos de Inventario</h3>
-          <p>Entradas y salidas en los últimos 7 días</p>
-        </div>
-        <select class="chart-selector">
-          <option>Últimos 7 días</option>
-          <option>Últimos 30 días</option>
-          <option>Últimos 3 meses</option>
-        </select>
-      </div>
-      <div class="chart-body">
-        <div class="chart-placeholder">
-          <canvas id="movimientosChart"></canvas>
-          <!-- Aquí iría tu gráfica real con Chart.js o similar -->
-          <div class="mock-chart">
-            <div class="chart-bars">
-              <div class="bar-group">
-                <div class="bar entry" style="height: 75%"></div>
-                <div class="bar exit" style="height: 60%"></div>
-                <span class="bar-label">Lun</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar entry" style="height: 85%"></div>
-                <div class="bar exit" style="height: 70%"></div>
-                <span class="bar-label">Mar</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar entry" style="height: 65%"></div>
-                <div class="bar exit" style="height: 80%"></div>
-                <span class="bar-label">Mié</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar entry" style="height: 90%"></div>
-                <div class="bar exit" style="height: 75%"></div>
-                <span class="bar-label">Jue</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar entry" style="height: 80%"></div>
-                <div class="bar exit" style="height: 85%"></div>
-                <span class="bar-label">Vie</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar entry" style="height: 95%"></div>
-                <div class="bar exit" style="height: 90%"></div>
-                <span class="bar-label">Sáb</span>
-              </div>
-              <div class="bar-group">
-                <div class="bar entry" style="height: 70%"></div>
-                <div class="bar exit" style="height: 65%"></div>
-                <span class="bar-label">Dom</span>
-              </div>
-            </div>
-            <div class="chart-legend">
-              <div class="legend-item">
-                <span class="legend-color entry"></span>
-                <span>Entradas</span>
-              </div>
-              <div class="legend-item">
-                <span class="legend-color exit"></span>
-                <span>Salidas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Distribución por Categoría -->
-    <div class="chart-card">
-      <div class="chart-header">
-        <div>
-          <h3>Distribución por Categoría</h3>
-          <p>Valor del inventario</p>
-        </div>
-      </div>
-      <div class="chart-body">
-        <div class="donut-chart">
-          <svg viewBox="0 0 100 100" class="donut">
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#4caf50" stroke-width="20" stroke-dasharray="75.4 251.2" transform="rotate(-90 50 50)"/>
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#2196f3" stroke-width="20" stroke-dasharray="62.8 251.2" stroke-dashoffset="-75.4" transform="rotate(-90 50 50)"/>
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#ff9800" stroke-width="20" stroke-dasharray="50.2 251.2" stroke-dashoffset="-138.2" transform="rotate(-90 50 50)"/>
-            <circle cx="50" cy="50" r="40" fill="none" stroke="#9c27b0" stroke-width="20" stroke-dasharray="62.8 251.2" stroke-dashoffset="-188.4" transform="rotate(-90 50 50)"/>
-          </svg>
-          <div class="donut-center">
-            <span class="donut-total">$45K</span>
-            <span class="donut-label">Total</span>
-          </div>
-        </div>
-        <div class="category-legend">
-          <div class="category-item">
-            <span class="category-color" style="background: #4caf50"></span>
-            <div class="category-info">
-              <span class="category-name">Ingredientes</span>
-              <span class="category-value">$13,570 (30%)</span>
-            </div>
-          </div>
-          <div class="category-item">
-            <span class="category-color" style="background: #2196f3"></span>
-            <div class="category-info">
-              <span class="category-name">Lácteos</span>
-              <span class="category-value">$11,310 (25%)</span>
-            </div>
-          </div>
-          <div class="category-item">
-            <span class="category-color" style="background: #ff9800"></span>
-            <div class="category-info">
-              <span class="category-name">Carnes</span>
-              <span class="category-value">$9,046 (20%)</span>
-            </div>
-          </div>
-          <div class="category-item">
-            <span class="category-color" style="background: #9c27b0"></span>
-            <div class="category-info">
-              <span class="category-name">Otros</span>
-              <span class="category-value">$11,304 (25%)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Top Productos -->
-  <section class="tables-section">
-    <div class="table-card">
+  <!-- Sección combinada: Más Vendidos + Bajo Stock lado a lado -->
+  <section class="side-by-side-section" *ngIf="masVendidos.length > 0 || bajoStock.length > 0">
+    
+    <!-- Productos Más Vendidos -->
+    <div class="report-card" *ngIf="masVendidos.length > 0">
       <div class="table-header">
         <h3>🏆 Productos Más Vendidos</h3>
-        <button class="btn-view-all">Ver todos</button>
       </div>
-      <div class="table-body">
+
+      <div class="table-container">
         <table class="data-table">
           <thead>
             <tr>
               <th>#</th>
               <th>Producto</th>
-              <th>Categoría</th>
               <th>Vendidos</th>
-              <th>Ingresos</th>
-              <th>Tendencia</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🧀</span>
-                  <span class="product-name">Queso Mozzarella</span>
-                </div>
-              </td>
-              <td><span class="category-badge lacteos">Lácteos</span></td>
-              <td><strong>450 kg</strong></td>
-              <td><strong>$6,750</strong></td>
-              <td><span class="trend up">↑ 15%</span></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🍖</span>
-                  <span class="product-name">Pepperoni Premium</span>
-                </div>
-              </td>
-              <td><span class="category-badge carnes">Carnes</span></td>
-              <td><strong>280 kg</strong></td>
-              <td><strong>$5,320</strong></td>
-              <td><span class="trend up">↑ 12%</span></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🌾</span>
-                  <span class="product-name">Harina para Pizza</span>
-                </div>
-              </td>
-              <td><span class="category-badge ingredientes">Ingredientes</span></td>
-              <td><strong>320 kg</strong></td>
-              <td><strong>$1,920</strong></td>
-              <td><span class="trend up">↑ 8%</span></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🍅</span>
-                  <span class="product-name">Salsa de Tomate</span>
-                </div>
-              </td>
-              <td><span class="category-badge ingredientes">Ingredientes</span></td>
-              <td><strong>180 L</strong></td>
-              <td><strong>$1,260</strong></td>
-              <td><span class="trend down">↓ 3%</span></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🧄</span>
-                  <span class="product-name">Champiñones</span>
-                </div>
-              </td>
-              <td><span class="category-badge ingredientes">Ingredientes</span></td>
-              <td><strong>95 kg</strong></td>
-              <td><strong>$1,140</strong></td>
-              <td><span class="trend up">↑ 5%</span></td>
+            <tr *ngFor="let item of masVendidos; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.nombre || item.codigo_producto }}</td>
+              <td><strong>{{ item.total_vendido || 0 }}</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <!-- Gráfica Productos Más Vendidos -->
+      <div class="chart-container" *ngIf="isBrowser">
+        <div class="chart-header">
+          <h4>Distribución de Ventas</h4>
+        </div>
+        <div class="chart-wrapper">
+          <canvas baseChart [data]="masVendidosChartData" type="bar" [options]="masVendidosChartOptions">
+          </canvas>
+        </div>
+      </div>
     </div>
 
-    <div class="table-card">
+    <!-- Productos Bajo Stock -->
+    <div class="report-card" *ngIf="bajoStock.length > 0">
       <div class="table-header">
-        <h3>⚠️ Alertas de Stock Bajo</h3>
-        <button class="btn-view-all">Ver todos</button>
+        <h3>⚠️ Productos con Bajo Stock</h3>
       </div>
-      <div class="table-body">
+
+      <div class="table-container">
         <table class="data-table">
           <thead>
             <tr>
               <th>Producto</th>
-              <th>Stock Actual</th>
-              <th>Stock Mínimo</th>
-              <th>Estado</th>
-              <th>Acción</th>
+              <th>Stock</th>
+              <th>Categoría</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🌾</span>
-                  <span class="product-name">Harina para Pizza</span>
-                </div>
-              </td>
-              <td><strong>15 kg</strong></td>
-              <td>30 kg</td>
-              <td><span class="status critical">Crítico</span></td>
-              <td><button class="btn-order">Ordenar</button></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🧈</span>
-                  <span class="product-name">Mantequilla</span>
-                </div>
-              </td>
-              <td><strong>8 kg</strong></td>
-              <td>15 kg</td>
-              <td><span class="status critical">Crítico</span></td>
-              <td><button class="btn-order">Ordenar</button></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🌿</span>
-                  <span class="product-name">Albahaca Fresca</span>
-                </div>
-              </td>
-              <td><strong>22 manojos</strong></td>
-              <td>20 manojos</td>
-              <td><span class="status warning">Bajo</span></td>
-              <td><button class="btn-order">Ordenar</button></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="product-cell">
-                  <span class="product-icon">🫒</span>
-                  <span class="product-name">Aceitunas Negras</span>
-                </div>
-              </td>
-              <td><strong>18 kg</strong></td>
-              <td>15 kg</td>
-              <td><span class="status warning">Bajo</span></td>
-              <td><button class="btn-order">Ordenar</button></td>
+            <tr *ngFor="let prod of bajoStock">
+              <td>{{ prod.nombre }}</td>
+              <td>{{ prod.stock || 0 }}</td>
+              <td>{{ prod.categoria_nombre || 'Sin categoría' }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-  </section>
 
-  <!-- Reporte por Proveedor -->
-  <section class="provider-section">
-    <div class="section-header">
-      <h2>📋 Análisis por Proveedor</h2>
-      <button class="btn-export-secondary">Exportar PDF</button>
-    </div>
-    <div class="provider-grid">
-      <div class="provider-card">
-        <div class="provider-header">
-          <div class="provider-info">
-            <h4>Lácteos del Valle</h4>
-            <span class="provider-category">Lácteos y Quesos</span>
-          </div>
-          <span class="provider-rating">⭐ 4.8</span>
+      <!-- Gráfica Bajo Stock por Categoría -->
+      <div class="chart-container" *ngIf="isBrowser">
+        <div class="chart-header">
+          <h4>Bajo Stock por Categoría</h4>
         </div>
-        <div class="provider-stats">
-          <div class="stat">
-            <span class="stat-label">Pedidos</span>
-            <span class="stat-value">28</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Valor Total</span>
-            <span class="stat-value">$18,450</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Promedio</span>
-            <span class="stat-value">$658</span>
-          </div>
-        </div>
-        <div class="provider-performance">
-          <div class="performance-bar">
-            <div class="performance-fill" style="width: 96%"></div>
-          </div>
-          <span class="performance-label">96% puntualidad</span>
-        </div>
-      </div>
-
-      <div class="provider-card">
-        <div class="provider-header">
-          <div class="provider-info">
-            <h4>Carnes Premium SA</h4>
-            <span class="provider-category">Carnes y Embutidos</span>
-          </div>
-          <span class="provider-rating">⭐ 4.9</span>
-        </div>
-        <div class="provider-stats">
-          <div class="stat">
-            <span class="stat-label">Pedidos</span>
-            <span class="stat-value">35</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Valor Total</span>
-            <span class="stat-value">$24,680</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Promedio</span>
-            <span class="stat-value">$705</span>
-          </div>
-        </div>
-        <div class="provider-performance">
-          <div class="performance-bar">
-            <div class="performance-fill" style="width: 98%"></div>
-          </div>
-          <span class="performance-label">98% puntualidad</span>
-        </div>
-      </div>
-
-      <div class="provider-card">
-        <div class="provider-header">
-          <div class="provider-info">
-            <h4>Distribuidora Central</h4>
-            <span class="provider-category">Ingredientes Varios</span>
-          </div>
-          <span class="provider-rating">⭐ 4.6</span>
-        </div>
-        <div class="provider-stats">
-          <div class="stat">
-            <span class="stat-label">Pedidos</span>
-            <span class="stat-value">42</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Valor Total</span>
-            <span class="stat-value">$15,890</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Promedio</span>
-            <span class="stat-value">$378</span>
-          </div>
-        </div>
-        <div class="provider-performance">
-          <div class="performance-bar">
-            <div class="performance-fill" style="width: 92%"></div>
-          </div>
-          <span class="performance-label">92% puntualidad</span>
+        <div class="chart-wrapper">
+          <canvas baseChart [data]="bajoStockChartData" type="pie" [options]="bajoStockChartOptions">
+          </canvas>
         </div>
       </div>
     </div>
