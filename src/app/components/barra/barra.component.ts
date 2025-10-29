@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,15 +9,11 @@ import { Router } from '@angular/router';
 export class BarraComponent {
   @Input() sidebarCollapsed: boolean = false;
   @Output() sidebarToggled = new EventEmitter<void>();
-  @Output() sidebarStateChange = new EventEmitter<boolean>();
-  sidebarVisible = true;
 
   constructor(private router: Router) {}
 
   toggleSidebar() {
     this.sidebarToggled.emit();
-    this.sidebarVisible = !this.sidebarVisible;
-    this.sidebarStateChange.emit(this.sidebarVisible);
   }
 
   logout() {

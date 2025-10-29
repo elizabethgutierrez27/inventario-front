@@ -31,40 +31,6 @@
 
 /* ===== ESTADOS DEL SIDEBAR ===== */
 
-/* Cuando el sidebar está expandido (completo) */
-.admin-layout.sidebar-expanded .main-content {
-  margin-left: 280px;
-  width: calc(100% - 280px);
-}
-
-/* Cuando el sidebar está colapsado (solo íconos) */
-.admin-layout.sidebar-collapsed .main-content {
-  margin-left: 80px;
-  width: calc(100% - 80px);
-}
-
-/* Asegurar que el contenido principal sea responsive */
-.main-content {
-  transition: all 0.3s ease;
-  min-height: 100vh;
-  padding: 1rem;
-}
-
-/* Para dispositivos móviles */
-@media (max-width: 768px) {
-  .admin-layout.sidebar-expanded .main-content,
-  .admin-layout.sidebar-collapsed .main-content {
-    margin-left: 0;
-    width: 100%;
-  }
-  
-  /* En móvil, cuando está expandida, el sidebar se superpone */
-  .admin-layout.sidebar-expanded .main-content {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
 /* ===== SECCIÓN DE BIENVENIDA ===== */
 
 .welcome-section {

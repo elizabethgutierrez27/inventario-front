@@ -4,10 +4,10 @@ import { NavigationEnd, Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  sidebarVisible = true;
+  sidebarCollapsed = false; // Control global del estado del sidebar
   showSidebar = true;
 
   constructor(private router: Router) {
@@ -20,7 +20,7 @@ export class AppComponent {
     });
   }
 
-   onSidebarStateChange(visible: boolean) {
-    this.sidebarVisible = visible;
+  onSidebarToggled() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 }
