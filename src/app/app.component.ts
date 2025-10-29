@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ export class AppComponent {
   sidebarVisible = true;
   showSidebar = true;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,private authService: AuthService, private snackBar: MatSnackBar) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // Rutas donde NO quieres mostrar la barra
@@ -22,5 +24,25 @@ export class AppComponent {
 
    onSidebarStateChange(visible: boolean) {
     this.sidebarVisible = visible;
+  }
+
+  ngOnInit(): void {
+    // Proteger contra entornos donde no hay localStorage
+    if (typeof window !== 'undefined') {
+      const token = this.authService.obtenerToken();
+      const tiempoRestante = this.authService.obtenerTiempoRestante();
+
+      if (token && tiempoRestante > 0) {
+        this.snackBar.open(
+          `Tienes ${tiempoRestante} minutos restantes de sesión.`,
+          'Cerrar',
+          {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          }
+        );
+      }
+    }
   }
 }

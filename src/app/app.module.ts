@@ -3,6 +3,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
 import { RouterModule } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +19,8 @@ import { BarraComponent } from './components/barra/barra.component';
 import { ReportesComponent } from './components/reportes - dashboard/reportes.component';
 import { ProductosComponent } from './components/productos/productos.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -39,12 +42,15 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
     NgChartsModule,
     RouterModule,
     NgChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
   ],
 providers: [
   provideClientHydration(),
   provideHttpClient(withFetch()),
-  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  provideAnimationsAsync()
 ],
   bootstrap: [AppComponent]
 })

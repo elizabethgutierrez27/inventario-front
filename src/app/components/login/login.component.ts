@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent {
   mensaje: string = '';
   pasoCodigo: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,private snackBar: MatSnackBar) {}
 
   onLogin() {
     if (!this.correo || !this.password) {
@@ -45,28 +46,44 @@ export class LoginComponent {
     });
   }
 
-  onVerificarCodigo() {
-    if (!this.codigo) {
-      this.mensaje = 'Por favor ingresa el código de verificación.';
-      return;
-    }
-
-    this.authService.verificarCodigo(this.correo, this.codigo).subscribe({
-      next: (res: any) => {
-        console.log('[LoginComponent] Respuesta verificación:', res);
-
-        if (res.codigo === 0) {
-          this.guardarTokenYRedirigir(res.token);
-        } else {
-          this.mensaje = res.error?.mensaje || 'Código incorrecto.';
-        }
-      },
-      error: (err) => {
-        console.error('[LoginComponent] Error verificación:', err);
-        this.mensaje = 'Ocurrió un error en el servidor.';
-      }
-    });
+ onVerificarCodigo() {
+  if (!this.codigo) {
+    this.mensaje = 'Por favor ingresa el código de verificación.';
+    return;
   }
+
+  this.authService.verificarCodigo(this.correo, this.codigo).subscribe({
+    next: (res: any) => {
+      console.log('[LoginComponent] Respuesta verificación:', res);
+
+      if (res.codigo === 0) {
+        this.guardarTokenYRedirigir(res.token);
+
+        // Mostrar notificación con tiempo restante
+        if (res.tiempo_restante_min !== undefined) {
+          this.snackBar.open(
+            `Autenticación exitosa. Te quedan ${res.tiempo_restante_min} minutos de sesión.`,
+            'Cerrar',
+            {
+              duration: 5000, // 5 segundos
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+              panelClass: ['snackbar-success'] // opcional, para personalizar
+            }
+          );
+        }
+      } else {
+        this.mensaje = res.error?.mensaje || 'Código incorrecto.';
+      }
+    },
+    error: (err) => {
+      console.error('[LoginComponent] Error verificación:', err);
+      this.mensaje = 'Ocurrió un error en el servidor.';
+    }
+  });
+}
+
+
 
   private guardarTokenYRedirigir(token: string) {
     localStorage.setItem('token', token);
