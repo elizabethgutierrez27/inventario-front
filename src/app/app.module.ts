@@ -13,6 +13,7 @@ import { AuthInterceptor } from './services/interceptor.service';
 import { BarraComponent } from './components/barra/barra.component';
 import { ReportesComponent } from './components/reportes - dashboard/reportes.component';
 import { ProductosComponent } from './components/productos/productos.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ProductosComponent } from './components/productos/productos.component';
   ],
   providers: [
     provideClientHydration(),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
