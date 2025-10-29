@@ -17,6 +17,7 @@ import { BarraComponent } from './components/barra/barra.component';
 import { ReportesComponent } from './components/reportes - dashboard/reportes.component';
 import { ProductosComponent } from './components/productos/productos.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     BarraComponent,
     ReportesComponent,
     ProductosComponent,
+    UsuariosComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     HttpClientModule,
     NgChartsModule,
     RouterModule,
+    NgChartsModule,
     ReactiveFormsModule
   ],
   bootstrap: [AppComponent]
