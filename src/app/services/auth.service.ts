@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { interval, Observable, of, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,10 @@ export class AuthService {
   private tokenKey = 'token';
   private tiempoKey = 'tiempo_restante_min';
 
-  constructor(private http: HttpClient) {
-          this.iniciarContadorSesion();
+  constructor(private http: HttpClient,private router: Router) {
+    if (this.isLocalStorageAvailable()) {
+    this.iniciarContadorSesion();
+  }
   }
 
   // LOGIN
@@ -106,14 +109,27 @@ obtenerTiempoRestante(): number {
     return typeof window !== 'undefined' && !!window.localStorage;
   }
   private iniciarContadorSesion() {
-    interval(60000).subscribe(() => { // 1 minuto
-      const tiempo = this.obtenerTiempoRestante();
-      if (tiempo > 0) {
-        this.guardarTiempoRestante(tiempo - 1);
-      } else if (tiempo === 0 && this.obtenerToken()) {
-        console.log('[AuthService] Sesión expirada, cerrando...');
-        this.logout();
-      }
-    });
-  }
+  interval(60000).subscribe(() => {
+    const tiempo = this.obtenerTiempoRestante();
+
+    if (tiempo > 0) {
+      this.guardarTiempoRestante(tiempo - 1);
+    } else if (tiempo === 0 && this.obtenerToken()) {
+      console.log('[AuthService] Sesión expirada, cerrando...');
+
+      this.logout().subscribe({
+        next: () => {
+          console.log('[AuthService] Logout ejecutado');
+          this.router.navigate(['/login']);  // ✅ Redirigir
+        },
+        error: (err) => {
+          console.error('[AuthService] Error en logout:', err);
+          this.router.navigate(['/login']);  // ✅ Redirigir aunque falle
+        }
+      });
+    }
+  });
+}
+
+
 }

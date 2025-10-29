@@ -4,6 +4,15 @@
   (sidebarStateChange)="onSidebarStateChange($event)">
 </app-barra>
 
+
+<app-notificacion
+  [visible]="notifVisible"
+  [mensaje]="notifMensaje"
+  [tipo]="notifTipo">
+</app-notificacion>
+
+<router-outlet></router-outlet>
+
 <!-- Contenido principal -->
 <div class="main-content" [class.shifted]="showSidebar && sidebarVisible">
   <router-outlet></router-outlet>

@@ -3,7 +3,6 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
 import { RouterModule } from '@angular/router';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +20,8 @@ import { ProductosComponent } from './components/productos/productos.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { NotificacionComponent } from './components/notificacion/notificacion.component';
+import { TiempoInterceptor } from './interceptor/tiempo.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     ReportesComponent,
     ProductosComponent,
     UsuariosComponent,
+    NotificacionComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,14 +44,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     NgChartsModule,
     RouterModule,
     NgChartsModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
 providers: [
   provideClientHydration(),
   provideHttpClient(withFetch()),
-  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: TiempoInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   provideAnimationsAsync()
 ],
   bootstrap: [AppComponent]

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +11,7 @@ export class AppComponent {
   sidebarVisible = true;
   showSidebar = true;
 
-  constructor(private router: Router,private authService: AuthService, private snackBar: MatSnackBar) {
+  constructor(private router: Router,private authService: AuthService, ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // Rutas donde NO quieres mostrar la barra
@@ -26,23 +25,26 @@ export class AppComponent {
     this.sidebarVisible = visible;
   }
 
-  ngOnInit(): void {
-    // Proteger contra entornos donde no hay localStorage
-    if (typeof window !== 'undefined') {
-      const token = this.authService.obtenerToken();
-      const tiempoRestante = this.authService.obtenerTiempoRestante();
+  notifVisible = false;
+notifMensaje = '';
+notifTipo = 'success';
 
-      if (token && tiempoRestante > 0) {
-        this.snackBar.open(
-          `Tienes ${tiempoRestante} minutos restantes de sesión.`,
-          'Cerrar',
-          {
-            duration: 5000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          }
-        );
-      }
+mostrarNotificacion(mensaje: string, tipo = 'success') {
+  this.notifMensaje = mensaje;
+  this.notifTipo = tipo;
+  this.notifVisible = true;
+  setTimeout(() => this.notifVisible = false, 5000);
+}
+
+ngOnInit(): void {
+  if (typeof window !== 'undefined') {
+    const token = this.authService.obtenerToken();
+    const tiempoRestante = this.authService.obtenerTiempoRestante();
+
+    if (token && tiempoRestante > 0) {
+      this.mostrarNotificacion(`Tienes ${tiempoRestante} minutos restantes de sesión.`);
     }
   }
+}
+
 }

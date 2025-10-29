@@ -1,20 +1,16 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
+  const authService = inject(AuthService);
 
-  if (typeof window === 'undefined' || !window.localStorage) {
-    console.warn('[AuthGuard] No se puede acceder a localStorage.');
-    router.navigate(['/login']); // <--- Redirige al login
-    return false;
-  }
-
-  const token = localStorage.getItem('token');
+  const token = authService.obtenerToken();
 
   if (!token) {
     console.warn('[AuthGuard] No hay token. Acceso denegado.');
-    router.navigate(['/login']); // <--- Redirige al login
+    router.navigate(['/login']);
     return false;
   }
 
@@ -27,7 +23,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
     if (state.url.startsWith('/admin') && rol !== 'admin') {
       console.warn('[AuthGuard] No autorizado para /admin');
-      router.navigate(['/login']); // <--- Redirige si no tiene rol
+      router.navigate(['/login']);
       return false;
     }
 
