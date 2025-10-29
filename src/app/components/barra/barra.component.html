@@ -3,48 +3,48 @@
 
 <!-- Sidebar - solo usa collapsed -->
 <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
-    <div class="sidebar-header">
-        <div class="logo">🍕</div>
-        <div class="brand-info">
-            <h2>LindaVista</h2>
-            <span class="subtitle">Admin Panel</span>
-        </div>
+  <div class="sidebar-header">
+    <div class="logo">🍕</div>
+    <div class="brand-info">
+      <h2>LindaVista</h2>
+      <span class="subtitle">Admin Panel</span>
     </div>
+  </div>
 
-    <nav class="sidebar-nav">
-        <a routerLink="/admin" routerLinkActive="active" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span class="nav-text">Dashboard</span>
-        </a>
-        <a routerLink="/admin/productos" routerLinkActive="active" class="nav-item">
-            <span class="nav-icon">📦</span>
-            <span class="nav-text">Productos</span>
-        </a>
-        <a routerLink="/admin/bitacora" routerLinkActive="active" class="nav-item">
-            <span class="nav-icon">📝</span>
-            <span class="nav-text">Bitácora</span>
-        </a>
-        <a routerLink="/admin/reportes" routerLinkActive="active" class="nav-item">
-            <span class="nav-icon">📈</span>
-            <span class="nav-text">Reportes</span>
-        </a>
-        <a routerLink="/admin/usuarios" routerLinkActive="active" class="nav-item">
-            <span class="nav-icon">👥</span>
-            <span class="nav-text">Usuarios</span>
-        </a>
-    </nav>
+  <nav class="sidebar-nav">
+    <a routerLink="/admin" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📊</span>
+      <span class="nav-text">Dashboard</span>
+    </a>
+    <a routerLink="/productos" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📦</span>
+      <span class="nav-text">Productos</span>
+    </a>
+    <a routerLink="/bitacora" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📝</span>
+      <span class="nav-text">Bitácora</span>
+    </a>
+    <a routerLink="/reportes" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📈</span>
+      <span class="nav-text">Reportes</span>
+    </a>
+    <a routerLink="/usuarios" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">👥</span>
+      <span class="nav-text">Usuarios</span>
+    </a>
+  </nav>
 
-    <div class="sidebar-footer">
-        <div class="user-info">
-            <div class="user-avatar">A</div>
-            <div class="user-details">
-                <span class="user-name">Administrador</span>
-                <span class="user-role">Admin</span>
-            </div>
-        </div>
-        <button class="btn-logout" (click)="logout()">
-            <span class="logout-icon">🚪</span>
-            Salir
-        </button>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <span class="user-name">Administrador</span>
+        <span class="user-role">Admin</span>
+      </div>
     </div>
+    <button class="btn-logout" (click)="logout()">
+      <span class="logout-icon">🚪</span>
+      Salir
+    </button>
+  </div>
 </aside>
