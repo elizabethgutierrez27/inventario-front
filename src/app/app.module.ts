@@ -37,7 +37,8 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
     FormsModule,
     HttpClientModule,
     NgChartsModule,
-    RouterModule
+    RouterModule,
+    NgChartsModule
   ],
 providers: [
   provideClientHydration(),
