@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ReporteService {
   private apiUrl = 'http://localhost:3001/reporte'; // tu endpoint de Java con Swagger
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getInventarioActual(): Observable<any> {
     return this.http.post(`${this.apiUrl}/inventario`, {});
@@ -34,7 +34,8 @@ export class ReporteService {
     return this.http.post(`${this.apiUrl}/dashboard/mas-vendidos`, {});
   }
 
-    exportReport(body: any): Observable<Blob> {
+  exportReport(body: any): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/export`, body, { responseType: 'blob' });
   }
+  
 }

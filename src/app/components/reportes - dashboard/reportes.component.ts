@@ -3,6 +3,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { ReporteService } from '../../services/reporte.service';
 import { ChartOptions, ChartData } from 'chart.js';
 
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import * as XLSX from 'xlsx';
+
+
 // Interfaz para tipar los productos - ACTUALIZADA
 interface Producto {
   id?: number;
@@ -27,6 +32,7 @@ interface Producto {
 })
 export class ReportesComponent implements OnInit {
 
+  
   // KPIs
   valorInventario: number = 0;
   bajoStock: Producto[] = [];
@@ -175,15 +181,58 @@ export class ReportesComponent implements OnInit {
   }
 
   // Exportar reporte
-  exportReport(tipo: string) {
-    const body = { tipo };
-    this.reporteService.exportReport(body).subscribe((blob: Blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${tipo}.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
+exportReport(tipo: string, formato: 'pdf' | 'excel') {
+  const body = { reportType: tipo, format: formato };
+  
+  this.reporteService.exportReport(body).subscribe((blob: Blob) => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${tipo}_${formato}_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.${formato === 'pdf' ? 'pdf' : 'xlsx'}`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  });
+}
+
+async exportAll(format: string) {
+  if (format === 'pdf') {
+    const element = document.querySelector('.reportes-container') as HTMLElement;
+
+    if (!element) {
+      alert('No se encontró el contenido a exportar.');
+      return;
+    }
+
+    // Captura del dashboard completo
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+
+    // Crear PDF
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('reporte_general.pdf');
   }
+
+  if (format === 'excel') {
+    this.exportAllToExcel();
+  }
+}
+
+
+exportAllToExcel() {
+  const wb = XLSX.utils.book_new();
+  const tables = document.querySelectorAll('table.data-table');
+
+  tables.forEach((table: any, index) => {
+    const ws = XLSX.utils.table_to_sheet(table);
+    const sheetName = `Tabla${index + 1}`;
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  });
+
+  XLSX.writeFile(wb, 'reporte_general.xlsx');
+}
+
 }

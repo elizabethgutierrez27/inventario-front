@@ -229,6 +229,50 @@
   border-bottom: none;
 }
 
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
+.btn-export {
+  background-color: #1976d2;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-export:hover {
+  background-color: #115293;
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 10px 20px;
+}
+
+.btn-export {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: 0.2s;
+}
+
+.btn-export.pdf { background-color: #e74c3c; }
+.btn-export.excel { background-color: #27ae60; }
+.btn-export:hover { opacity: 0.85; }
+
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1200px) {
   .side-by-side-section {

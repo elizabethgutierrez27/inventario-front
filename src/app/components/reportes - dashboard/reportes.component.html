@@ -2,9 +2,14 @@
   <header class="reportes-header">
     <div class="header-content">
       <div class="header-text">
-        <h1>📊 Reportes y Análisis</h1>
+        <h1>📊 Dashboard - Análisis</h1>
         <p>Visualiza y analiza el rendimiento de tu inventario</p>
       </div>
+      <div class="export-buttons">
+        <button class="btn-export pdf" (click)="exportAll('pdf')">📄 Exportar Todo (PDF)</button>
+        <button class="btn-export excel" (click)="exportAll('excel')">📊 Exportar Todo (Excel)</button>
+      </div>
+
     </div>
   </header>
 
@@ -29,11 +34,14 @@
 
   <!-- Sección combinada: Más Vendidos + Bajo Stock lado a lado -->
   <section class="side-by-side-section" *ngIf="masVendidos.length > 0 || bajoStock.length > 0">
-    
+
     <!-- Productos Más Vendidos -->
     <div class="report-card" *ngIf="masVendidos.length > 0">
       <div class="table-header">
         <h3>🏆 Productos Más Vendidos</h3>
+        <div class="actions">
+          <button class="btn-export" (click)="exportReport('mas_vendidos', 'excel')">📊 Excel</button>
+        </div>
       </div>
 
       <div class="table-container">
@@ -71,6 +79,9 @@
     <div class="report-card" *ngIf="bajoStock.length > 0">
       <div class="table-header">
         <h3>⚠️ Productos con Bajo Stock</h3>
+        <div class="actions">
+          <button class="btn-export" (click)="exportReport('bajo_stock', 'excel')">📊 Excel</button>
+        </div>
       </div>
 
       <div class="table-container">
@@ -88,7 +99,7 @@
               <td>{{ prod.stock || 0 }}</td>
               <td>{{ prod.categoria_nombre || 'Sin categoría' }}</td>
             </tr>
-          </tbody>
+          </tbody> 
         </table>
       </div>
 

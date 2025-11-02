@@ -10,22 +10,29 @@
   display: block;
   background: #f5f7fa;
   min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 /* ===== LAYOUT PRINCIPAL ===== */
 
-
-
-/* ===== CONTENIDO PRINCIPAL ===== */
-.main-content {
-  padding: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
+.admin-layout {
+  display: flex;
+  transition: margin-left 0.3s ease;
 }
 
+/* ===== CONTENIDO PRINCIPAL ===== */
+
+.main-content {
+  transition: all 0.3s ease;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* ===== ESTADOS DEL SIDEBAR ===== */
 
 /* ===== SECCIÓN DE BIENVENIDA ===== */
+
 .welcome-section {
   padding: 2rem;
   background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
@@ -88,6 +95,7 @@
 }
 
 /* ===== ESTADÍSTICAS ===== */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -172,6 +180,7 @@
 }
 
 /* ===== ACCIONES RÁPIDAS ===== */
+
 .quick-actions {
   padding: 0;
 }
@@ -224,8 +233,9 @@
 }
 
 /* ===== ACTIVIDAD RECIENTE ===== */
+
 .recent-activity {
-  padding: 0 ;
+  padding: 0;
 }
 
 .activity-list {
@@ -301,34 +311,29 @@
 }
 
 /* ===== RESPONSIVE ===== */
+
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
-
   .sidebar.active {
     transform: translateX(0);
   }
-
   .main-content {
     margin-left: 0;
   }
-
   .btn-menu-toggle {
     display: block;
   }
-
   .welcome-section {
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
   }
-
   .stats-grid {
     grid-template-columns: 1fr;
   }
-
   .actions-grid {
     grid-template-columns: 1fr;
   }
@@ -338,29 +343,23 @@
   .topbar {
     padding: 1rem;
   }
-
   .breadcrumb {
     display: none;
   }
-
   .welcome-section {
     padding: 1.5rem;
   }
-
   .welcome-content h1 {
     font-size: 1.5rem;
   }
-
   .welcome-actions {
     flex-direction: column;
     width: 100%;
   }
-
   .btn-action {
     width: 100%;
     justify-content: center;
   }
-
   .stats-grid,
   .quick-actions,
   .recent-activity {
