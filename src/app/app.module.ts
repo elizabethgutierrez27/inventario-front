@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch,HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
 import { RouterModule } from '@angular/router';
 
@@ -10,13 +10,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './components/admin/admin.component';
 import { PersonalComponent } from './components/personal/personal.component';
 import { AuthInterceptor } from './services/interceptor.service';
 import { BarraComponent } from './components/barra/barra.component';
 import { ReportesComponent } from './components/reportes - dashboard/reportes.component';
 import { ProductosComponent } from './components/productos/productos.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -28,21 +29,27 @@ import { ProductosComponent } from './components/productos/productos.component';
     BarraComponent,
     ReportesComponent,
     ProductosComponent,
+    UsuariosComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    NgChartsModule
+  ],
+  providers: [
+    provideClientHydration(),
+    provideHttpClient(withFetch()),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    provideAnimationsAsync(),
+    HttpClientModule,
     NgChartsModule,
     RouterModule,
+    NgChartsModule,
     ReactiveFormsModule
   ],
-providers: [
-  provideClientHydration(),
-  provideHttpClient(withFetch()),
-  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

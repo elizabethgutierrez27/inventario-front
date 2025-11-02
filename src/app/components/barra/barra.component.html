@@ -1,8 +1,8 @@
 <!-- Botón para abrir/cerrar el menú -->
 <button class="btn-menu-toggle" (click)="toggleSidebar()">☰</button>
 
-<!-- Sidebar -->
-<aside class="sidebar" [class.hidden]="!sidebarVisible">
+<!-- Sidebar - solo usa collapsed -->
+<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
   <div class="sidebar-header">
     <div class="logo">🍕</div>
     <div class="brand-info">
@@ -20,7 +20,7 @@
       <span class="nav-icon">📦</span>
       <span class="nav-text">Productos</span>
     </a>
-    <a routerLink="/admin/bitacora" routerLinkActive="active" class="nav-item">
+    <a routerLink="/bitacora" routerLinkActive="active" class="nav-item">
       <span class="nav-icon">📝</span>
       <span class="nav-text">Bitácora</span>
     </a>
@@ -28,7 +28,7 @@
       <span class="nav-icon">📈</span>
       <span class="nav-text">Reportes</span>
     </a>
-    <a routerLink="/admin/usuarios" routerLinkActive="active" class="nav-item">
+    <a routerLink="/usuarios" routerLinkActive="active" class="nav-item">
       <span class="nav-icon">👥</span>
       <span class="nav-text">Usuarios</span>
     </a>

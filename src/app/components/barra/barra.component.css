@@ -1,4 +1,5 @@
 /* === BOTÓN PARA ABRIR / CERRAR === */
+
 .btn-menu-toggle {
   position: fixed;
   top: 2.5rem;
@@ -22,7 +23,8 @@
 
 :host {
   display: block;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 .btn-menu-toggle:hover {
@@ -30,6 +32,7 @@
 }
 
 /* === SIDEBAR === */
+
 .sidebar {
   width: 280px;
   height: 100vh;
@@ -41,16 +44,56 @@
   display: flex;
   flex-direction: column;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: width 0.3s ease;
   z-index: 1000;
 }
 
 /* Estado oculto */
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar:not(.collapsed) {
+  width: 280px;
+}
+.sidebar.collapsed .brand-info,
+.sidebar.collapsed .sidebar-footer .user-details,
+.sidebar.collapsed .nav-item .nav-text,
+.sidebar.collapsed .btn-logout {
+  display: none;
+  /* ocultamos texto y detalles */
+}
+
+.sidebar.collapsed .sidebar-header .logo {
+  margin: 0 auto;
+  /* centramos el icono */
+}
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  /* centramos los iconos */
+}
+
+/* Estado completamente oculto */
 .sidebar.hidden {
   transform: translateX(-100%);
 }
 
+/* Estado colapsado (solo íconos) */
+.sidebar.collapsed:not(.hidden) {
+  width: 80px;
+  transform: translateX(0);
+}
+
+/* Estado normal */
+.sidebar:not(.collapsed):not(.hidden) {
+  width: 280px;
+  transform: translateX(0);
+}
+
 /* === HEADER === */
+
 .sidebar-header {
   padding: 2rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -78,6 +121,7 @@
 }
 
 /* === NAV === */
+
 .sidebar-nav {
   flex: 1;
   padding: 1.5rem 0;
@@ -109,6 +153,7 @@
 }
 
 /* === FOOTER === */
+
 .sidebar-footer {
   padding: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -170,36 +215,30 @@
   color: white;
 }
 
-
 /* ===== RESPONSIVE ===== */
+
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
-
   .sidebar.active {
     transform: translateX(0);
   }
-
   .main-content {
     margin-left: 0;
   }
-
   .btn-menu-toggle {
     display: block;
   }
-
   .welcome-section {
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
   }
-
   .stats-grid {
     grid-template-columns: 1fr;
   }
-
   .actions-grid {
     grid-template-columns: 1fr;
   }
@@ -209,29 +248,23 @@
   .topbar {
     padding: 1rem;
   }
-
   .breadcrumb {
     display: none;
   }
-
   .welcome-section {
     padding: 1.5rem;
   }
-
   .welcome-content h1 {
     font-size: 1.5rem;
   }
-
   .welcome-actions {
     flex-direction: column;
     width: 100%;
   }
-
   .btn-action {
     width: 100%;
     justify-content: center;
   }
-
   .stats-grid,
   .quick-actions,
   .recent-activity {

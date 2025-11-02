@@ -1,10 +1,33 @@
-.main-content {
-  transition: margin-left 0.3s ease;
-  padding: 2rem;
-  margin-left: 0;
+/* app.component.css */
+
+.app-layout {
+  transition: all 0.3s ease;
+  min-height: 100vh;
 }
 
-/* Cuando el sidebar está visible */
-.main-content.shifted {
-  margin-left: 280px; /* Igual que el ancho de tu barra lateral */
+/* Cuando el sidebar está expandido (completo) */
+.app-layout.sidebar-expanded {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+}
+
+/* Cuando el sidebar está colapsado (solo íconos) */
+.app-layout.sidebar-collapsed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* Cuando no hay sidebar (login, etc) */
+.app-layout.no-sidebar {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 768px) {
+  .app-layout.sidebar-expanded,
+  .app-layout.sidebar-collapsed {
+    margin-left: 0;
+    width: 100%;
+  }
 }
