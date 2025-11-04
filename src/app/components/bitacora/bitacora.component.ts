@@ -184,9 +184,9 @@ export class BitacoraComponent {
 
   // Guardar cambios de edición
   guardarCambios(): void {
-    if (this.editarForm.invalid || !this.movimientoEnEdicion) {
+    if (!this.movimientoEnEdicion) {
       this.mostrarNotificacion(
-        'Por favor complete todos los campos requeridos',
+        'No hay movimiento seleccionado para editar',
         'error'
       );
       return;
