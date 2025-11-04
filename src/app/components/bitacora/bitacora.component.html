@@ -1,0 +1,162 @@
+<!-- bitacora.component.html -->
+<h2>Bitácora de Movimientos</h2>
+
+<!-- Sección de Registro (Colapsable) -->
+<div class="crear-section" [class.collapsed]="crearCollapsed">
+  <h3 (click)="crearCollapsed = !crearCollapsed">Nuevo Registro en Bitácora</h3>
+  <div class="crear-content">
+    <form [formGroup]="crearForm" (ngSubmit)="crear()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código Producto *</label>
+          <input formControlName="id_producto" placeholder="Ej: CAM123" />
+        </div>
+        <div class="form-group">
+          <label>Tipo Movimiento *</label>
+          <select formControlName="tipo_movimiento">
+            <option value="entrada">Entrada</option>
+            <option value="salida">Salida</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cantidad *</label>
+          <input
+            type="number"
+            formControlName="cantidad"
+            placeholder="0"
+            min="1"
+          />
+        </div>
+        <div class="form-group full-width">
+          <label>Descripción *</label>
+          <textarea
+            formControlName="descripcion"
+            placeholder="Descripción del movimiento..."
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">Registrar Movimiento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Sección de Movimientos (Tabla) -->
+<div class="contenedor">
+  <h2>Historial de Movimientos</h2>
+
+  <div
+    class="movimientos-container"
+    *ngIf="movimientos.length; else sinMovimientos"
+  >
+    <div class="movimientos-table">
+      <div class="table-header">
+        <div class="col-fecha">Fecha</div>
+        <div class="col-producto">Producto</div>
+        <div class="col-tipo">Tipo</div>
+        <div class="col-cantidad">Cantidad</div>
+        <div class="col-descripcion">Descripción</div>
+        <div class="col-acciones">Acciones</div>
+      </div>
+
+      <div class="table-body">
+        <div class="table-row" *ngFor="let mov of movimientos">
+          <div class="col-fecha">
+            <div class="fecha">{{ mov.fecha | date : "dd/MM/yyyy" }}</div>
+            <div class="hora">{{ mov.fecha | date : "HH:mm" }}</div>
+          </div>
+          <div class="col-producto">
+            <span class="codigo-producto">{{ mov.codigo_producto }}</span>
+          </div>
+          <div class="col-tipo">
+            <span
+              class="badge"
+              [class.entrada]="mov.tipo_movimiento === 'entrada'"
+              [class.salida]="mov.tipo_movimiento === 'salida'"
+            >
+              {{
+                mov.tipo_movimiento === "entrada" ? "➕ Entrada" : "➖ Salida"
+              }}
+            </span>
+          </div>
+          <div class="col-cantidad">
+            <span
+              [class.positive]="mov.tipo_movimiento === 'entrada'"
+              [class.negative]="mov.tipo_movimiento === 'salida'"
+            >
+              {{ mov.tipo_movimiento === "entrada" ? "+" : "-"
+              }}{{ mov.cantidad }}
+            </span>
+          </div>
+          <div class="col-descripcion">
+            {{ mov.descripcion }}
+          </div>
+          <div class="col-acciones">
+            <button class="btn-editar" (click)="editar(mov)">Editar</button>
+            <button class="btn-eliminar" (click)="eliminar(mov)">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #sinMovimientos>
+    <div class="empty-state">
+      <div class="empty-state-icon">📋</div>
+      <h3>No hay movimientos registrados</h3>
+      <p>
+        Comienza registrando tu primer movimiento usando el formulario de arriba
+      </p>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Modal de edición -->
+<div class="modal" *ngIf="movimientoEnEdicion">
+  <div class="modal-content">
+    <h3>Editar Movimiento</h3>
+    <form [formGroup]="editarForm" (ngSubmit)="guardarCambios()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tipo Movimiento</label>
+          <select formControlName="tipo_movimiento">
+            <option value="entrada">Entrada</option>
+            <option value="salida">Salida</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input type="number" formControlName="cantidad" min="1" />
+        </div>
+        <div class="form-group full-width">
+          <label>Descripción</label>
+          <textarea formControlName="descripcion" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="info-readonly">
+        <div class="info-item">
+          <label>Producto:</label>
+          <span>{{ movimientoEnEdicion.codigo_producto }}</span>
+        </div>
+        <div class="info-item">
+          <label>Fecha original:</label>
+          <span>{{
+            movimientoEnEdicion.fecha | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+      </div>
+
+      <div class="botones-modal">
+        <button type="button" class="btn-cancelar" (click)="cerrarModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>

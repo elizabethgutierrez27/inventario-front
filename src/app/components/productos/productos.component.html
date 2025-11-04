@@ -1,0 +1,180 @@
+<h2>Productos</h2>
+
+<!-- Sección de Filtros (Compacto y Horizontal) -->
+<div class="filtros-section">
+  <h3>Buscar Productos</h3>
+  <form [formGroup]="filtrosForm" (ngSubmit)="filtrar()">
+    <div class="filtros-row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input formControlName="nombre" placeholder="Buscar por nombre...">
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <input formControlName="categoria" placeholder="Buscar por categoría...">
+      </div>
+      <div class="form-group">
+        <label>Proveedor</label>
+        <input formControlName="proveedor" placeholder="Buscar por proveedor...">
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">Filtrar</button>
+        <button type="button" class="btn-secondary" (click)="listarTodos()">Limpiar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Sección de Creación (Colapsable) -->
+<div class="crear-section" [class.collapsed]="crearCollapsed">
+  <h3 (click)="crearCollapsed = !crearCollapsed">Nuevo Producto</h3>
+  <div class="crear-content">
+    <form [formGroup]="crearForm" (ngSubmit)="crear()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código *</label>
+          <input formControlName="codigo" placeholder="Ej: PROD-001">
+        </div>
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input formControlName="nombre" placeholder="Nombre del producto">
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <input formControlName="descripcion" placeholder="Descripción breve">
+        </div>
+        <div class="form-group">
+          <label>Cantidad *</label>
+          <input type="number" formControlName="cantidad" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Stock Mínimo</label>
+          <input type="number" formControlName="stock" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Precio *</label>
+          <input type="number" formControlName="precio" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Proveedor</label>
+          <input formControlName="proveedor" placeholder="Nombre del proveedor">
+        </div>
+        <div class="form-group">
+          <label>Categoría *</label>
+          <select formControlName="id_categoria">
+            <option *ngFor="let cat of categorias" [value]="cat.id">
+              {{ cat.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>URL Imagen</label>
+          <input formControlName="imagen" placeholder="https://...">
+        </div>
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">Crear Producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Sección de Productos (Vista Grid de Cards) -->
+<div class="contenedor">
+  <h2>Lista de Productos</h2>
+
+  <div class="productos-grid" *ngIf="productos.length; else sinProductos">
+    <div class="producto-card" *ngFor="let p of productos">
+      <div class="producto-imagen-container">
+        <img [src]="p.imagen" [alt]="p.nombre">
+        <div class="producto-codigo-badge">{{ p.codigo }}</div>
+      </div>
+      
+      <div class="producto-body">
+        <h3 class="producto-nombre">{{ p.nombre }}</h3>
+        <p class="producto-descripcion">{{ p.descripcion }}</p>
+        <span class="producto-categoria-tag">{{ obtenerNombreCategoria(p.id_categoria) }}</span>
+        
+        <div class="producto-info-grid">
+          <div class="info-item">
+            <span class="info-label">Cantidad</span>
+            <span class="info-value">{{ p.cantidad }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Stock Mín.</span>
+            <span class="info-value">{{ p.stock }}</span>
+          </div>
+        </div>
+        
+        <div class="producto-precio-container">
+          <div class="producto-precio">${{ p.precio }}</div>
+        </div>
+        
+        <div class="producto-proveedor">{{ p.proveedor }}</div>
+        
+        <div class="producto-actions">
+          <button class="btn-editar" (click)="editar(p)">Editar</button>
+          <button class="btn-eliminar" (click)="eliminar(p)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #sinProductos>
+    <div class="empty-state">
+      <div class="empty-state-icon">📦</div>
+      <h3>No hay productos registrados</h3>
+      <p>Comienza agregando tu primer producto usando el formulario de arriba</p>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Modal de edición -->
+<div class="modal" *ngIf="productoEnEdicion">
+  <div class="modal-content">
+    <h3>Editar Producto</h3>
+    <form [formGroup]="editarForm" (ngSubmit)="guardarCambios()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input formControlName="nombre" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <input formControlName="descripcion" />
+        </div>
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input type="number" formControlName="cantidad" />
+        </div>
+        <div class="form-group">
+          <label>Stock</label>
+          <input type="number" formControlName="stock" />
+        </div>
+        <div class="form-group">
+          <label>Precio</label>
+          <input type="number" formControlName="precio" />
+        </div>
+        <div class="form-group">
+          <label>Proveedor</label>
+          <input formControlName="proveedor" />
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select formControlName="id_categoria">
+            <option *ngFor="let c of categorias" [value]="c.id">{{ c.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Imagen (URL)</label>
+          <input formControlName="imagen" />
+        </div>
+      </div>
+
+      <div class="botones-modal">
+        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>

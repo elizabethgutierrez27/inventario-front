@@ -1,0 +1,46 @@
+<app-notificacion
+  [visible]="notificacionVisible"
+  [mensaje]="notificacionMensaje"
+  [tipo]="notificacionTipo">
+</app-notificacion>
+
+
+<div class="login-container">
+<div class="login-card">
+<div class="logo">🍕</div>
+<h2>Iniciar sesión</h2>
+<p>Accede al sistema de gestión de inventarios de <strong>Pizzería LindaVista</strong></p>
+
+
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+
+  <!-- Paso 1: login -->
+  <form *ngIf="!pasoCodigo" (ngSubmit)="onLogin()" #loginForm="ngForm">
+    <div class="form-group">
+      <label>Correo</label>
+      <input type="email" [(ngModel)]="correo" name="correo" required />
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </div>
+    <button type="submit" [disabled]="!loginForm.valid">Ingresar</button>
+  </form>
+
+  <!-- Paso 2: código -->
+  <form *ngIf="pasoCodigo" (ngSubmit)="onVerificarCodigo()" #codigoForm="ngForm">
+    <div class="form-group">
+      <label>Código de verificación</label>
+      <input type="text" [(ngModel)]="codigo" name="codigo" required />
+    </div>
+    <button type="submit" [disabled]="!codigoForm.valid">Verificar</button>
+  </form>
+
+</div>
+
+
+
+<p class="note">¿Olvidaste tu contraseña? <a routerLink="/recuperar">Recupérala aquí</a></p>
+</div>
+</div>

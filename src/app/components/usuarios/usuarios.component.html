@@ -1,0 +1,175 @@
+<app-notificacion
+  [visible]="notificacionVisible"
+  [mensaje]="notificacionMensaje"
+  [tipo]="notificacionTipo">
+</app-notificacion>
+
+
+<!-- Sección de Creación (Colapsable) -->
+<div class="crear-section" [class.collapsed]="crearCollapsed">
+  <h3 (click)="crearCollapsed = !crearCollapsed">Nuevo Usuario</h3>
+
+  <div class="crear-content">
+    <form [formGroup]="crearForm" (ngSubmit)="crear()">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Correo *</label>
+          <input formControlName="correo" type="email" placeholder="ejemplo@correo.com">
+        </div>
+
+        <div class="form-group">
+          <label>Contraseña *</label>
+          <input formControlName="password" type="password" placeholder="Mínimo 8 caracteres">
+        </div>
+
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input formControlName="nombre" placeholder="Nombre del usuario">
+        </div>
+
+        <div class="form-group">
+          <label>Apellido Paterno *</label>
+          <input formControlName="app" placeholder="Apellido paterno">
+        </div>
+
+        <div class="form-group">
+          <label>Apellido Materno</label>
+          <input formControlName="apm" placeholder="Apellido materno (opcional)">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input formControlName="telefono" placeholder="+521234567890">
+        </div>
+
+        <div class="form-group">
+          <label>Rol *</label>
+          <select formControlName="rol">
+            <option value="user">Usuario</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="display:none">
+          <label>Estado</label>
+          <input formControlName="estado" type="hidden">
+        </div>
+
+
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn-primary">Crear Usuario</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<!-- Lista de Usuarios (Grid estilo cards) -->
+<div class="contenedor">
+  <h2>Lista de Usuarios</h2>
+
+  <div class="productos-grid" *ngIf="usuarios.length; else sinUsuarios">
+
+    <div class="producto-card" *ngFor="let u of usuarios">
+
+      <div class="producto-body">
+
+        <h3 class="producto-nombre">{{ u.nombre }} {{ u.app }} {{ u.apm }}</h3>
+        <p class="producto-descripcion">{{ u.correo }}</p>
+
+        <span class="producto-categoria-tag">{{ u.rol }}</span>
+
+        <div class="producto-info-grid">
+          <div class="info-item">
+            <span class="info-label">Teléfono</span>
+            <span class="info-value">{{ u.telefono }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Estado</span>
+            <span class="info-value">{{ u.estado }}</span>
+          </div>
+        </div>
+
+        <div class="producto-actions">
+          <button class="btn-editar" (click)="editar(u)">Editar</button>
+          <button class="btn-eliminar" (click)="eliminar(u)">Eliminar</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #sinUsuarios>
+    <div class="empty-state">
+      <div class="empty-state-icon">👥</div>
+      <h3>No hay usuarios registrados</h3>
+      <p>Agrega el primer usuario usando el formulario superior.</p>
+    </div>
+  </ng-template>
+
+</div>
+
+<!-- Modal edición -->
+<div class="modal" *ngIf="usuarioEnEdicion">
+  <div class="modal-content">
+
+    <h3>Editar Usuario</h3>
+
+    <form [formGroup]="editarForm" (ngSubmit)="guardarCambios()">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Nombre</label>
+          <input formControlName="nombre">
+        </div>
+
+        <div class="form-group">
+          <label>Apellido Paterno</label>
+          <input formControlName="app">
+        </div>
+
+        <div class="form-group">
+          <label>Apellido Materno</label>
+          <input formControlName="apm">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input formControlName="telefono">
+        </div>
+
+        <div class="form-group">
+          <label>Rol</label>
+          <select formControlName="rol">
+            <option value="user">Usuario</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Estado</label>
+          <select formControlName="estado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="botones-modal">
+        <button type="button" class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

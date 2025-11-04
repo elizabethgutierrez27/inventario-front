@@ -1,0 +1,359 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  background: #f5f7fa;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.reportes-container {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.reportes-header {
+  background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(211, 47, 47, 0.3);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.header-text h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.header-text p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* ===== KPIs ===== */
+.kpis-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.8rem;
+  display: flex;
+  gap: 1.2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border-left: 4px solid;
+}
+
+.kpi-card.primary {
+  border-left-color: #9c27b0;
+}
+
+.kpi-card.warning {
+  border-left-color: #ff9800;
+}
+
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.kpi-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.kpi-card.primary .kpi-icon {
+  background: linear-gradient(135deg, #9c27b0, #ab47bc);
+}
+
+.kpi-card.warning .kpi-icon {
+  background: linear-gradient(135deg, #ff9800, #ffa726);
+}
+
+.kpi-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== SECCIÓN LADO A LADO ===== */
+.side-by-side-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.report-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px; /* Altura mínima para balance visual */
+}
+
+.table-header {
+  padding: 1.5rem 1.8rem;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f9fafb;
+}
+
+.table-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.table-container {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  flex: 1;
+  max-height: 300px; /* Limitar altura de la tabla */
+  overflow-y: auto;
+}
+
+/* ===== GRÁFICAS MEJORADAS ===== */
+.chart-container {
+  padding: 1.5rem; /* CORREGIDO: de 10rem a 1.5rem */
+  border-top: 1px solid #f0f0f0;
+  min-height: 350px; /* Espacio suficiente para gráficas */
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-header {
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.chart-header h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  text-align: center;
+}
+
+.chart-wrapper {
+  flex: 1;
+  min-height: 280px;
+  position: relative;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 300px !important;
+}
+
+/* ===== TABLAS ===== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: #f9fafb;
+}
+
+.data-table th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.data-table tbody tr {
+  transition: background 0.3s ease;
+}
+
+.data-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
+.btn-export {
+  background-color: #1976d2;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-export:hover {
+  background-color: #115293;
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 10px 20px;
+}
+
+.btn-export {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: 0.2s;
+}
+
+.btn-export.pdf { background-color: #e74c3c; }
+.btn-export.excel { background-color: #27ae60; }
+.btn-export:hover { opacity: 0.85; }
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .side-by-side-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .report-card {
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reportes-container {
+    padding: 1rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .kpis-section {
+    grid-template-columns: 1fr;
+  }
+
+  .side-by-side-section {
+    grid-template-columns: 1fr;
+  }
+
+  .table-container {
+    max-height: 250px;
+  }
+
+  .chart-container {
+    min-height: 300px;
+  }
+
+  .data-table {
+    min-width: auto;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reportes-container {
+    padding: 0.5rem;
+  }
+
+  .reports-header {
+    padding: 1.5rem;
+  }
+
+  .header-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .kpi-card {
+    padding: 1.2rem;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+  }
+
+  .table-header {
+    padding: 1rem 1.2rem;
+  }
+
+  .table-container,
+  .chart-container {
+    padding: 1rem;
+  }
+  
+  .chart-container {
+    min-height: 250px;
+  }
+}

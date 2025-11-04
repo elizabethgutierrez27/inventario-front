@@ -1,0 +1,118 @@
+<div class="reportes-container">
+  <header class="reportes-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1>📊 Dashboard - Análisis</h1>
+        <p>Visualiza y analiza el rendimiento de tu inventario</p>
+      </div>
+      <div class="export-buttons">
+        <button class="btn-export pdf" (click)="exportAll('pdf')">📄 Exportar Todo (PDF)</button>
+        <button class="btn-export excel" (click)="exportAll('excel')">📊 Exportar Todo (Excel)</button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- KPIs principales -->
+  <section class="kpis-section">
+    <div class="kpi-card primary">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-content">
+        <span class="kpi-label">Valor Total Inventario</span>
+        <h2 class="kpi-value">{{ formatoMoneda(valorInventario) }}</h2>
+      </div>
+    </div>
+
+    <div class="kpi-card warning">
+      <div class="kpi-icon">⚠️</div>
+      <div class="kpi-content">
+        <span class="kpi-label">Productos Bajo Stock</span>
+        <h2 class="kpi-value">{{ bajoStock.length }}</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección combinada: Más Vendidos + Bajo Stock lado a lado -->
+  <section class="side-by-side-section" *ngIf="masVendidos.length > 0 || bajoStock.length > 0">
+
+    <!-- Productos Más Vendidos -->
+    <div class="report-card" *ngIf="masVendidos.length > 0">
+      <div class="table-header">
+        <h3>🏆 Productos Más Vendidos</h3>
+        <div class="actions">
+          <button class="btn-export" (click)="exportReport('mas_vendidos', 'excel')">📊 Excel</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Producto</th>
+              <th>Vendidos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of masVendidos; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.nombre || item.codigo_producto }}</td>
+              <td><strong>{{ item.total_vendido || 0 }}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Gráfica Productos Más Vendidos -->
+      <div class="chart-container" *ngIf="isBrowser">
+        <div class="chart-header">
+          <h4>Distribución de Ventas</h4>
+        </div>
+        <div class="chart-wrapper">
+          <canvas baseChart [data]="masVendidosChartData" type="bar" [options]="masVendidosChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos Bajo Stock -->
+    <div class="report-card" *ngIf="bajoStock.length > 0">
+      <div class="table-header">
+        <h3>⚠️ Productos con Bajo Stock</h3>
+        <div class="actions">
+          <button class="btn-export" (click)="exportReport('bajo_stock', 'excel')">📊 Excel</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Stock</th>
+              <th>Categoría</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prod of bajoStock">
+              <td>{{ prod.nombre }}</td>
+              <td>{{ prod.stock || 0 }}</td>
+              <td>{{ prod.categoria_nombre || 'Sin categoría' }}</td>
+            </tr>
+          </tbody> 
+        </table>
+      </div>
+
+      <!-- Gráfica Bajo Stock por Categoría -->
+      <div class="chart-container" *ngIf="isBrowser">
+        <div class="chart-header">
+          <h4>Bajo Stock por Categoría</h4>
+        </div>
+        <div class="chart-wrapper">
+          <canvas baseChart [data]="bajoStockChartData" type="pie" [options]="bajoStockChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,133 @@
+<div class="admin-content">
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+      <div class="welcome-content">
+        <h1>¡Bienvenido de vuelta! 👋</h1>
+        <p>Aquí tienes un resumen de tu pizzería hoy</p>
+      </div>
+      <div class="welcome-actions">
+        <button class="btn-action primary" routerLink="/admin/productos">
+          <span class="btn-icon">➕</span>
+          Nuevo Producto
+        </button>
+        <button class="btn-action secondary" routerLink="/admin/reportes">
+          <span class="btn-icon">📊</span>
+          Ver Reportes
+        </button>
+      </div>
+    </section>
+
+    <br />
+
+    <!-- Quick Stats -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon products">📦</div>
+        <div class="stat-info">
+          <h3 class="stat-value">156</h3>
+          <p class="stat-label">Productos Activos</p>
+        </div>
+        <div class="stat-change positive">+12%</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon alerts">🔔</div>
+        <div class="stat-info">
+          <h3 class="stat-value">8</h3>
+          <p class="stat-label">Alertas de Stock</p>
+        </div>
+        <div class="stat-change warning">Revisar</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon movements">📝</div>
+        <div class="stat-info">
+          <h3 class="stat-value">342</h3>
+          <p class="stat-label">Movimientos Hoy</p>
+        </div>
+        <div class="stat-change positive">+8%</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon value">💰</div>
+        <div class="stat-info">
+          <h3 class="stat-value">$45,230</h3>
+          <p class="stat-label">Valor Inventario</p>
+        </div>
+        <div class="stat-change positive">+5%</div>
+      </div>
+    </section>
+
+    <br />
+
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+      <h2 class="section-title">Acceso Rápido</h2>
+      <div class="actions-grid">
+        <div class="action-card" routerLink="/admin/productos">
+          <div class="action-icon">📦</div>
+          <h3>Gestionar Productos</h3>
+          <p>Agregar, editar o eliminar productos del inventario</p>
+        </div>
+        <div class="action-card" routerLink="/admin/bitacora">
+          <div class="action-icon">📝</div>
+          <h3>Registrar Movimiento</h3>
+          <p>Registrar entradas y salidas de inventario</p>
+        </div>
+        <div class="action-card" routerLink="/admin/reportes">
+          <div class="action-icon">📊</div>
+          <h3>Ver Dashboards</h3>
+          <p>Análisis y reportes del inventario</p>
+        </div>
+        <div class="action-card" routerLink="/admin/usuarios">
+          <div class="action-icon">👥</div>
+          <h3>Administrar Usuarios</h3>
+          <p>Gestionar permisos y accesos del sistema</p>
+        </div>
+      </div>
+    </section>
+
+    <br />
+
+    <!-- Recent Activity -->
+    <section class="recent-activity">
+      <h2 class="section-title">Actividad Reciente</h2>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon entry">📥</div>
+          <div class="activity-content">
+            <h4>Entrada de Inventario</h4>
+            <p>Se agregaron 50 unidades de Queso Mozzarella</p>
+            <span class="activity-time">Hace 15 minutos</span>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon exit">📤</div>
+          <div class="activity-content">
+            <h4>Salida de Inventario</h4>
+            <p>Se utilizaron 20 unidades de Pepperoni</p>
+            <span class="activity-time">Hace 1 hora</span>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon alert">⚠️</div>
+          <div class="activity-content">
+            <h4>Alerta de Stock Bajo</h4>
+            <p>Harina para Pizza tiene stock bajo (15 unidades)</p>
+            <span class="activity-time">Hace 2 horas</span>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon user">👤</div>
+          <div class="activity-content">
+            <h4>Nuevo Usuario Registrado</h4>
+            <p>Carlos Martínez fue agregado como empleado</p>
+            <span class="activity-time">Hace 3 horas</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
