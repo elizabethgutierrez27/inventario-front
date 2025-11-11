@@ -889,3 +889,14 @@ button {
     font-size: 1.3rem;
   }
 }
+
+.text-danger {
+  color: #d9534f;
+  font-size: 13px;
+  margin-top: 4px;
+}
+.modal .text-danger {
+  color: #ff4c4c;
+  font-size: 13px;
+  margin-top: 4px;
+}

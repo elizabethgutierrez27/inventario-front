@@ -10,9 +10,9 @@ interface Producto {
   cantidad: number;
   stock: number;
   precio: number;
-  proveedor: string;
+  proveedor?: string;
   id_categoria: number;
-  imagen: string;
+  imagen?: string;
   categoria_nombre?: string;
 }
 
@@ -35,10 +35,14 @@ export class ProductosComponent implements OnInit {
   crearForm!: FormGroup;
   editarForm!: FormGroup;
 
-  filtrosCollapsed = true;  // Comienza colapsado
+  filtrosCollapsed = true;
   crearCollapsed = true;
 
   productoEnEdicion: Producto | null = null;
+
+  // 🔹 Objetos para guardar errores específicos
+  erroresCrear: any = {};
+  erroresEditar: any = {};
 
   constructor(
     private productoService: ProductosService,
@@ -70,6 +74,7 @@ export class ProductosComponent implements OnInit {
     this.listarTodos();
     this.listarCategorias();
 
+    // Formulario de edición (se inicializa vacío)
     this.editarForm = this.fb.group({
       codigo: [''],
       nombre: [''],
@@ -83,6 +88,9 @@ export class ProductosComponent implements OnInit {
     });
   }
 
+  // ------------------------------------------------------------------
+  // FILTROS
+  // ------------------------------------------------------------------
   filtrar() {
     const filtros = this.filtrosForm.value;
     if (!filtros.nombre && !filtros.categoria && !filtros.proveedor) {
@@ -106,16 +114,18 @@ export class ProductosComponent implements OnInit {
   }
 
   obtenerNombreCategoria(idCategoria: number): string {
-  const categoria = this.categorias.find(c => c.id === idCategoria);
-  return categoria ? categoria.nombre : 'Sin categoría';
-}
-
+    const categoria = this.categorias.find(c => c.id === idCategoria);
+    return categoria ? categoria.nombre : 'Sin categoría';
+  }
 
   resetFiltros() {
     this.filtrosForm.reset({ nombre: '', categoria: '', proveedor: '' });
     this.listarTodos();
   }
 
+  // ------------------------------------------------------------------
+  // CRUD
+  // ------------------------------------------------------------------
   listarTodos() {
     this.productoService.listarProductos().subscribe({
       next: (res: any) => {
@@ -143,15 +153,44 @@ export class ProductosComponent implements OnInit {
     });
   }
 
+  // ------------------------------------------------------------------
+  // CREAR PRODUCTO
+  // ------------------------------------------------------------------
   crear() {
     const producto = this.crearForm.value;
+    this.erroresCrear = {}; // limpia errores previos
 
     this.productoService.crearProducto(producto).subscribe({
       next: (res: any) => {
+        
+        if (res.codigo === 2 && res.error?.detalle?.length > 0) {
+          this.erroresCrear = {};
+          let mensajesGlobales: string[] = [];
+
+          for (let err of res.error.detalle) {
+            if (err.campo) {
+              this.erroresCrear[err.campo] = err.mensaje;
+            } else {
+              mensajesGlobales.push(err.mensaje);
+            }
+          }
+
+          if (mensajesGlobales.length > 0) {
+            alert(mensajesGlobales.join('\n'));
+          }
+          return;
+        }
+
+        // ✅ Éxito
         alert(res.mensaje);
         if (res.codigo === 0) {
           this.listarTodos();
-          this.crearForm.reset({ id_categoria: this.categorias[0]?.id, cantidad: 0, stock: 0, precio: 0 });
+          this.crearForm.reset({
+            id_categoria: this.categorias[0]?.id,
+            cantidad: 0,
+            stock: 0,
+            precio: 0
+          });
         }
       },
       error: (err) => {
@@ -161,12 +200,69 @@ export class ProductosComponent implements OnInit {
     });
   }
 
+  // ------------------------------------------------------------------
+  // EDITAR PRODUCTO
+  // ------------------------------------------------------------------
+  editar(producto: Producto) {
+    this.productoEnEdicion = { ...producto };
+    this.erroresEditar = {};
+    this.editarForm.patchValue(this.productoEnEdicion);
+  }
+
+  guardarCambios() {
+    const productoActualizado = this.editarForm.value;
+    this.erroresEditar = {};
+
+    this.productoService.actualizarProducto(productoActualizado).subscribe({
+      next: (res: any) => {
+        // 🟥 Validaciones de backend
+        if (res.codigo === 2 && res.error?.detalle?.length > 0) {
+          this.erroresEditar = {};
+          let mensajesGlobales: string[] = [];
+
+          for (let err of res.error.detalle) {
+            if (typeof err === 'string') {
+              mensajesGlobales.push(err);
+            } else if (err.campo) {
+              this.erroresEditar[err.campo] = err.mensaje;
+            }
+          }
+
+          if (mensajesGlobales.length > 0) {
+            alert(mensajesGlobales.join('\n'));
+          }
+
+          return;
+        }
+
+        // ✅ Éxito
+        alert(res.mensaje);
+        if (res.codigo === 0) {
+          const index = this.productos.findIndex(p => p.codigo === productoActualizado.codigo);
+          if (index !== -1) {
+            const actualizado = res.producto;
+            actualizado.categoria_nombre =
+              this.categorias.find(c => c.id === actualizado.id_categoria)?.nombre || '';
+            this.productos[index] = actualizado;
+          }
+          this.cerrarModal();
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error de conexión al actualizar producto');
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // ELIMINAR PRODUCTO
+  // ------------------------------------------------------------------
   eliminar(producto: Producto) {
     if (!confirm(`¿Deseas eliminar el producto "${producto.nombre}"?`)) return;
     this.productoService.eliminarProducto(String(producto.codigo)).subscribe({
       next: (res: any) => {
         alert(res.mensaje || 'Producto eliminado correctamente');
-
         this.listarTodos();
       },
       error: (err) => {
@@ -176,35 +272,15 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  editar(producto: Producto) {
-    this.productoEnEdicion = { ...producto };
-    this.editarForm.patchValue(this.productoEnEdicion);
-  }
-
-  guardarCambios() {
-    const productoActualizado = this.editarForm.value;
-
-    this.productoService.actualizarProducto(productoActualizado).subscribe({
-      next: (res: any) => {
-        alert(res.mensaje);
-        if (res.codigo === 0) {
-          const index = this.productos.findIndex(p => p.codigo === productoActualizado.codigo);
-          if (index !== -1) {
-            const actualizado = res.producto;
-            actualizado.categoria_nombre = this.categorias.find(c => c.id === actualizado.id_categoria)?.nombre || '';
-            this.productos[index] = actualizado;
-          }
-        }
-        this.cerrarModal();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Error de conexión al actualizar producto');
-      }
-    });
-  }
-
+  // ------------------------------------------------------------------
+  // UTILIDADES
+  // ------------------------------------------------------------------
   cerrarModal() {
     this.productoEnEdicion = null;
+    this.erroresEditar = {};
+  }
+
+  get editarF() {
+    return this.editarForm.controls;
   }
 }
