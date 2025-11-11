@@ -14,6 +14,10 @@ import { Component, Input, OnChanges } from '@angular/core';
 
       <ng-container *ngIf="tipo === 'success'">
         {{ mensaje }}
+        <div *ngIf="otp" class="otp-container">
+          <span>Código OTP: <b>{{ otp }}</b></span>
+          <button (click)="copiarOTP()">Copiar</button>
+        </div>
       </ng-container>
     </div>
   `,
@@ -23,17 +27,31 @@ export class NotificacionComponent implements OnChanges {
   @Input() visible = false;
   @Input() mensaje = '';
   @Input() tipo: 'success' | 'error' = 'success';
+  @Input() otp?: string; // Para mostrar el código OTP
 
   errores: string[] = [];
   showClass = 'show';
 
   ngOnChanges() {
     if (this.visible) {
-      // Separar los errores por salto de línea o coma
       this.errores = this.tipo === 'error' ? this.mensaje.split(/\n|,/) : [];
       this.showClass = 'show';
-      // Ocultar automáticamente después de 5 segundos
-      setTimeout(() => this.showClass = 'hide', 5000);
+
+      // Ocultar automáticamente solo si NO es modo offline
+      if (!this.mensaje.includes("No se pudo enviar correo, código generado en modo offline")) {
+        setTimeout(() => this.showClass = 'hide', 5000);
+      }
     }
   }
+
+  copiarOTP() {
+  if (!this.otp) return;
+
+  navigator.clipboard.writeText(this.otp).then(() => {
+    alert(`Código OTP copiado: ${this.otp}`);
+    // Ocultar la notificación al copiar
+    this.visible = false;
+  });
+}
+
 }
