@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3001/auth';
+  private apiUrl = 'https://appwebpro-backend.onrender.com/auth';
   private tokenKey = 'token';
   private tiempoKey = 'tiempo_restante_min';
 

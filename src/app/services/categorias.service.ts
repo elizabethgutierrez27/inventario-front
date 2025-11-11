@@ -12,7 +12,7 @@ export interface Categoria {
 })
 export class CategoriasService {
 
-  private baseUrl = 'http://localhost:3001/categorias'; // Ajusta tu URL de backend
+  private baseUrl = 'https://appwebpro-backend.onrender.com/categorias'; // Ajusta tu URL de backend
 
   constructor(private http: HttpClient) { }
 

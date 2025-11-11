@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UsuarioService {
 
-  private apiUrl = 'http://localhost:3001'; // Base de la API
+  private apiUrl = 'https://appwebpro-backend.onrender.com'; // Base de la API
 
   constructor(private http: HttpClient) {}
 
