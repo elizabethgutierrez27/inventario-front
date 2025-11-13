@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ReporteService {
-  private apiUrl = 'http://localhost:3001/reporte'; // tu endpoint de Java con Swagger
+  private apiUrl = 'https://appwebpro-backend.onrender.com/reporte'; // tu endpoint de Java con Swagger
 
   constructor(private http: HttpClient) { }
 

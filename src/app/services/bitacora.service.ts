@@ -15,7 +15,7 @@ export interface Movimiento {
   providedIn: 'root',
 })
 export class BitacoraService {
-  private readonly baseURL = 'https://localhost:3000/bitacora';
+  private readonly baseURL = 'https://appwebpro-backend.onrender.com/bitacora';
 
   constructor(private readonly http: HttpClient) {}
 
