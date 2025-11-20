@@ -163,14 +163,16 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
 
   // Eliminar usuario
   eliminar(usuario: any) {
-    this.usuarioService.eliminarUsuario({ id: usuario.id }).subscribe({
-      next: () => {
-        this.listarUsuarios();
-        this.mostrarNotificacion('Usuario eliminado', 'success');
-      },
-      error: () => this.mostrarNotificacion('Error al eliminar usuario', 'error')
-    });
-  }
+  this.usuarioService.eliminarUsuario({ correo: usuario.correo }).subscribe({
+    next: () => {
+      this.listarUsuarios();
+      this.mostrarNotificacion('Usuario eliminado', 'success');
+    },
+    error: () => {
+      this.mostrarNotificacion('Error al eliminar usuario', 'error');
+    }
+  });
+}
 
   // Cerrar modal
   cerrarModal() {

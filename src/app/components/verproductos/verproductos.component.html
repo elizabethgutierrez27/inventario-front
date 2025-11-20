@@ -1,0 +1,39 @@
+<div class="contenedor">
+  <h2>Lista de Productos</h2>
+
+  <div class="productos-grid" *ngIf="productos.length; else sinProductos">
+    <div class="producto-card" *ngFor="let p of productos">
+      <div class="producto-imagen-container">
+        <img [src]="p.imagen" [alt]="p.nombre">
+        <div class="producto-codigo-badge">{{ p.codigo }}</div>
+      </div>
+
+      <div class="producto-body">
+        <h3 class="producto-nombre">{{ p.nombre }}</h3>
+        <p class="producto-descripcion">{{ p.descripcion }}</p>
+        <span class="producto-categoria-tag">{{ obtenerNombreCategoria(p.id_categoria) }}</span>
+
+        <div class="producto-info-grid">
+          <div class="info-item">
+            <span class="info-label">Cantidad</span>
+            <span class="info-value">{{ p.cantidad }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Stock Mín.</span>
+            <span class="info-value">{{ p.stock }}</span>
+          </div>
+        </div>
+
+        <div class="producto-proveedor">{{ p.proveedor }}</div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #sinProductos>
+    <div class="empty-state">
+      <div class="empty-state-icon">📦</div>
+      <h3>No hay productos disponibles</h3>
+      <p>En este momento no hay productos para mostrar.</p>
+    </div>
+  </ng-template>
+</div>

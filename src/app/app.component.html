@@ -1,9 +1,18 @@
-<!-- Barra lateral global -->
+<!-- Admin -->
 <app-barra
-  *ngIf="showSidebar"
+  *ngIf="rol === 'admin' && showSidebar"
   [sidebarCollapsed]="sidebarCollapsed"
   (sidebarToggled)="onSidebarToggled()"
-></app-barra>
+  (sidebarStateChange)="sidebarCollapsed = $event">
+</app-barra>
+
+<!-- Personal -->
+<app-barrapersonal
+  *ngIf="rol === 'user' && showSidebar"
+  [sidebarCollapsed]="sidebarCollapsed"
+  (sidebarToggled)="onSidebarToggled()"
+  (sidebarStateChange)="sidebarCollapsed = $event">
+</app-barrapersonal>
 
 
 

@@ -5,43 +5,54 @@ import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'] // corregido styleUrl -> styleUrls
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  sidebarCollapsed = false; // Control global del estado del sidebar
+  sidebarCollapsed = false;
   showSidebar = true;
-
+  rol: string | null = null;
 
   notifVisible = false;
   notifMensaje = '';
-  notifTipo: 'success' | 'error' = 'success'; // <-- tipo corregido
+  notifTipo: 'success' | 'error' = 'success';
 
   constructor(private router: Router, private authService: AuthService) {
-    // Controla el sidebar según la ruta
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const noSidebarRoutes = ['/login', '/recuperar', '/']; // agregamos recuperar
+        const noSidebarRoutes = ['/login', '/recuperar', '/'];
         this.showSidebar = !noSidebarRoutes.includes(event.url);
       }
     });
   }
 
   ngOnInit(): void {
-    // Notificación de sesión
-    if (typeof window !== 'undefined') {
-      const token = this.authService.obtenerToken();
-      const tiempoRestante = this.authService.obtenerTiempoRestante();
-
-      if (token && tiempoRestante > 0) {
-        this.mostrarNotificacion(`Tienes ${tiempoRestante} minutos restantes de sesión.`);
+  const token = this.authService.obtenerToken();
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.rol === 'admin') {
+        this.rol = 'admin';
+      } else {
+        this.rol = 'user'; // cualquier otro rol lo tratamos como 'user'
       }
+    } catch (err) {
+      console.error('Token inválido', err);
+      this.rol = 'user';
     }
+  } else {
+    this.rol = null;
   }
+
+  const tiempoRestante = this.authService.obtenerTiempoRestante();
+  if (this.rol && tiempoRestante > 0) {
+    this.mostrarNotificacion(`Tienes ${tiempoRestante} minutos restantes de sesión.`);
+  }
+}
+
 
   onSidebarToggled() {
     this.sidebarCollapsed = !this.sidebarCollapsed;
-  }
-
+  }
 
   mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
     this.notifMensaje = mensaje;

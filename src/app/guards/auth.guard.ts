@@ -27,11 +27,12 @@ export const authGuard: CanActivateFn = (route, state) => {
       return false;
     }
 
-    if (state.url.startsWith('/personal') && rol !== 'personal') {
+    if (state.url.startsWith('/personal') && rol !== 'user') {
       console.warn('[AuthGuard] No autorizado para /personal');
       router.navigate(['/login']);
       return false;
     }
+
 
     return true;
   } catch (error) {

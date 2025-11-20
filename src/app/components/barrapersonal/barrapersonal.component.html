@@ -1,0 +1,44 @@
+<!-- Botón para abrir/cerrar el menú -->
+<button class="btn-menu-toggle" (click)="toggleSidebar()">☰</button>
+
+<!-- Sidebar - solo usa collapsed -->
+<aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+  <div class="sidebar-header">
+    <div class="logo">🍕</div>
+    <div class="brand-info">
+      <h2>LindaVista</h2>
+      <span class="subtitle">Personal Panel</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/personal" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">🏡</span>
+      <span class="nav-text">Inicio</span>
+    </a>
+    <a routerLink="/verproductos" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📦</span>
+      <span class="nav-text">Ver Productos</span>
+    </a>
+    <a routerLink="/bitacora" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📝</span>
+      <span class="nav-text">Bitácora</span>
+    </a>
+
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <span class="user-name">Personal</span>
+        <span class="user-role">User</span>
+      </div>
+    </div>
+    <button class="btn-logout" (click)="logout()">
+      <span class="logout-icon">🚪</span>
+      Salir
+    </button>
+  </div>
+</aside>

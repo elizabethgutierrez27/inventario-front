@@ -1,1 +1,93 @@
-<p>personal works!</p>
+<div class="admin-content">
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Welcome Section -->
+	<section class="welcome-section">
+      <div class="welcome-content">
+        <h1>¡Bienvenido! 👋</h1>
+        <p>Acceso rápido a las funciones del personal</p>
+      </div>
+      <div class="welcome-actions">
+        <button class="btn-action primary" routerLink="/personal/productos">
+          <span class="btn-icon">📦</span>
+          Ver Productos
+        </button>
+        <button class="btn-action secondary" routerLink="/personal/bitacora">
+          <span class="btn-icon">📝</span>
+          Registrar Movimiento
+        </button>
+      </div>
+    </section>
+
+    <br />
+
+    <!-- Quick Stats – versión reducida para personal -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon products">📦</div>
+        <div class="stat-info">
+          <h3 class="stat-value">156</h3>
+          <p class="stat-label">Productos Disponibles</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon movements">📝</div>
+        <div class="stat-info">
+          <h3 class="stat-value">342</h3>
+          <p class="stat-label">Movimientos Hoy</p>
+        </div>
+      </div>
+    </section>
+
+    <br />
+
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+      <h2 class="section-title">Acceso Rápido</h2>
+      <div class="actions-grid">
+
+        <div class="action-card" routerLink="/personal/productos">
+          <div class="action-icon">📦</div>
+          <h3>Ver Productos</h3>
+          <p>Consulta los productos del inventario</p>
+        </div>
+
+        <div class="action-card" routerLink="/personal/bitacora">
+          <div class="action-icon">📝</div>
+          <h3>Registrar Movimiento</h3>
+          <p>Registrar entradas y salidas de inventario</p>
+        </div>
+
+      </div>
+    </section>
+
+    <br />
+
+    <!-- Recent Activity -->
+    <section class="recent-activity">
+      <h2 class="section-title">Actividad Reciente</h2>
+      <div class="activity-list">
+
+        <div class="activity-item">
+          <div class="activity-icon entry">📥</div>
+          <div class="activity-content">
+            <h4>Entrada de Inventario</h4>
+            <p>50 unidades de queso agregadas</p>
+            <span class="activity-time">Hace 15 minutos</span>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon exit">📤</div>
+          <div class="activity-content">
+            <h4>Salida de Inventario</h4>
+            <p>20 unidades de pepperoni usadas</p>
+            <span class="activity-time">Hace 1 hora</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+</div>
