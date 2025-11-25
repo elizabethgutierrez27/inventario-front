@@ -34,43 +34,43 @@
         <!-- CREAR PRODUCTO -->
 <div class="form-group">
   <label>Código *</label>
-  <input formControlName="codigo" placeholder="Ej: PROD-001">
+  <input formControlName="codigo" placeholder="Ej: PROD-001" maxlength="10">
   <div class="text-danger" *ngIf="erroresCrear.codigo">{{ erroresCrear.codigo }}</div>
 </div>
 
 <div class="form-group">
   <label>Nombre *</label>
-  <input formControlName="nombre" placeholder="Nombre del producto">
+  <input formControlName="nombre" placeholder="Nombre del producto" maxlength="53">
   <div class="text-danger" *ngIf="erroresCrear.nombre">{{ erroresCrear.nombre }}</div>
 </div>
 
 <div class="form-group">
   <label>Descripción</label>
-  <input formControlName="descripcion" placeholder="Descripción breve">
+  <input formControlName="descripcion" placeholder="Descripción breve" maxlength="100">
   <div class="text-danger" *ngIf="erroresCrear.descripcion">{{ erroresCrear.descripcion }}</div>
 </div>
 
 <div class="form-group">
   <label>Cantidad *</label>
-  <input type="number" formControlName="cantidad" placeholder="0">
+  <input type="number" formControlName="cantidad" placeholder="0" (input)="limitarDigitos($event, 6)">
   <div class="text-danger" *ngIf="erroresCrear.cantidad">{{ erroresCrear.cantidad }}</div>
 </div>
 
 <div class="form-group">
   <label>Stock *</label>
-  <input type="number" formControlName="stock" placeholder="0">
+  <input type="number" formControlName="stock" placeholder="0" (input)="limitarDigitos($event, 6)">
   <div class="text-danger" *ngIf="erroresCrear.stock">{{ erroresCrear.stock }}</div>
 </div>
 
 <div class="form-group">
   <label>Precio *</label>
-  <input type="number" formControlName="precio" placeholder="0.00">
+  <type="text" formControlName="precio" placeholder="0.00" maxlength="10" (input)="formatPrecio($event)"/>
   <div class="text-danger" *ngIf="erroresCrear.precio">{{ erroresCrear.precio }}</div>
 </div>
 
 <div class="form-group">
   <label>Proveedor</label>
-  <input formControlName="proveedor" placeholder="Proveedor">
+  <input formControlName="proveedor" placeholder="Proveedor" maxlength="53">
   <div class="text-danger" *ngIf="erroresCrear.proveedor">{{ erroresCrear.proveedor }}</div>
 </div>
 
@@ -152,32 +152,32 @@
       <div class="form-grid">
         <div class="form-group">
   <label>Nombre</label>
-  <input formControlName="nombre">
+  <input formControlName="nombre" maxlength="53">
   <div class="text-danger" *ngIf="erroresEditar.nombre">{{ erroresEditar.nombre }}</div>
 </div>
         <div class="form-group">
           <label>Descripción</label>
-          <input type="text" formControlName="descripcion" />
+          <input type="text" formControlName="descripcion"  maxlength="100"/>
           <div *ngIf="erroresEditar.descripcion" class="text-danger">{{ erroresEditar.descripcion }}</div>
         </div>
         <div class="form-group">
           <label>Cantidad</label>
-          <input type="number"  formControlName="cantidad" />
+          <input type="number"  formControlName="cantidad" (input)="limitarDigitos($event, 6)" />
           <div *ngIf="erroresEditar.cantidad" class="text-danger">{{ erroresEditar.cantidad }}</div>
         </div>
         <div class="form-group">
           <label>Stock</label>
-              <input type="number" formControlName="stock" />
+              <input type="number" formControlName="stock" (input)="limitarDigitos($event, 6)"/>
               <div *ngIf="erroresEditar.stock" class="text-danger">{{ erroresEditar.stock }}</div>
         </div>
        <div class="form-group">
   <label>Precio</label>
-  <input type="number" formControlName="precio">
+    <type="text" formControlName="precio" placeholder="0.00" maxlength="10" (input)="formatPrecio($event)"/>
   <div class="text-danger" *ngIf="erroresEditar.precio">{{ erroresEditar.precio }}</div>
 </div>
         <div class="form-group">
   <label>Proveedor</label>
-  <input formControlName="proveedor">
+  <input formControlName="proveedor" maxlength="53">
   <div class="text-danger" *ngIf="erroresEditar.proveedor">{{ erroresEditar.proveedor }}</div>
 </div>
         <div class="form-group">
