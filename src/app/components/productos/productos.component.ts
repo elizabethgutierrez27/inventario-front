@@ -89,15 +89,6 @@ export class ProductosComponent implements OnInit {
     proveedor: ['', [Validators.maxLength(53)]],
     id_categoria: [null, [Validators.required]],
 
-    codigo: [''],
-    nombre: [''],
-    descripcion: [''],
-    cantidad: [0],
-    stock: [0],
-    precio: [0],
-    proveedor: [''],
-    id_categoria: [null],
-    imagen: ['']
   });
 
   this.filtrosForm.valueChanges
