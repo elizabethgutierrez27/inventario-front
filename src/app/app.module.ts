@@ -23,6 +23,8 @@ import { NotificacionComponent } from './components/notificacion/notificacion.co
 import { TiempoInterceptor } from './interceptor/tiempo.interceptor';
 import { RecuperarComponent } from './components/recuperar/recuperar.component';
 import { BitacoraComponent } from './components/bitacora/bitacora.component';
+import { VerproductosComponent } from './components/verproductos/verproductos.component';
+import { BarrapersonalComponent } from './components/barrapersonal/barrapersonal.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { BitacoraComponent } from './components/bitacora/bitacora.component';
     UsuariosComponent,
     NotificacionComponent,
     RecuperarComponent,
-    BitacoraComponent
+    BitacoraComponent,
+    VerproductosComponent,
+    BarrapersonalComponent
   ],
   imports: [
     BrowserModule,

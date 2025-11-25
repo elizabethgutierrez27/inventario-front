@@ -79,6 +79,7 @@ export class ProductosComponent implements OnInit {
   this.listarCategorias();
 
   this.editarForm = this.fb.group({
+
     codigo: ['', [Validators.required, Validators.maxLength(10)]],
     nombre: ['', [Validators.required, Validators.maxLength(53)]],
     descripcion: ['', [Validators.maxLength(100)]],
@@ -87,6 +88,15 @@ export class ProductosComponent implements OnInit {
     precio: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
     proveedor: ['', [Validators.maxLength(53)]],
     id_categoria: [null, [Validators.required]],
+
+    codigo: [''],
+    nombre: [''],
+    descripcion: [''],
+    cantidad: [0],
+    stock: [0],
+    precio: [0],
+    proveedor: [''],
+    id_categoria: [null],
     imagen: ['']
   });
 
@@ -234,7 +244,7 @@ export class ProductosComponent implements OnInit {
 
     this.productoService.actualizarProducto(productoActualizado).subscribe({
       next: (res: any) => {
-        // 🟥 Validaciones de backend
+        // Validaciones de backend
         if (res.codigo === 2 && res.error?.detalle?.length > 0) {
           this.erroresEditar = {};
           let mensajesGlobales: string[] = [];
@@ -254,7 +264,7 @@ export class ProductosComponent implements OnInit {
           return;
         }
 
-        // ✅ Éxito
+        // Éxito
         alert(res.mensaje);
         if (res.codigo === 0) {
           const index = this.productos.findIndex(p => p.codigo === productoActualizado.codigo);

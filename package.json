@@ -23,6 +23,7 @@
     "@angular/platform-server": "^17.1.0",
     "@angular/router": "^17.1.0",
     "@angular/ssr": "^17.1.1",
+    "@sendinblue/client": "^3.3.1",
     "chart.js": "^3.9.1",
     "express": "^4.18.2",
     "html2canvas": "^1.4.1",

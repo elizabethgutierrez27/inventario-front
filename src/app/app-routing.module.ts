@@ -12,6 +12,7 @@ import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { authGuard } from './guards/auth.guard';
 import { RecuperarComponent } from './components/recuperar/recuperar.component';
 import { BitacoraComponent } from './components/bitacora/bitacora.component';
+import { VerproductosComponent } from './components/verproductos/verproductos.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'productos', component: ProductosComponent, canActivate: [authGuard] },
   { path: 'usuarios', component: UsuariosComponent, canActivate: [authGuard] },
   { path: 'bitacora', component: BitacoraComponent, canActivate: [authGuard] },
+  { path: 'verproductos', component: VerproductosComponent, canActivate: [authGuard] }
 ];
 
 

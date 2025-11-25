@@ -29,28 +29,29 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     // Formulario de creación
-    this.crearForm = this.fb.group({
-      nombre: ['', Validators.required],
-      app: ['', Validators.required],
-      apm: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
-      rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-      password: ['', Validators.required],
-      estado: ['activo', Validators.required]
-    });
+this.crearForm = this.fb.group({
+  nombre: ['', [Validators.required, Validators.maxLength(50)]],
+  app: ['', [Validators.required, Validators.maxLength(50)]],
+  apm: ['', [Validators.required, Validators.maxLength(50)]],
+  correo: ['', [Validators.required, Validators.email, Validators.maxLength(80)]],
+  telefono: ['', [Validators.required, Validators.maxLength(15)]],
+  rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+  password: ['', [Validators.required, Validators.maxLength(100)]],
+  estado: ['activo', Validators.required]
+});
 
-    // Formulario de edición
-    this.editarForm = this.fb.group({
-      id: ['', Validators.required],
-      nombre: ['', Validators.required],
-      app: ['', Validators.required],
-      apm: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
-      rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-      estado: ['activo', Validators.required]
-    });
+// Formulario de edición
+this.editarForm = this.fb.group({
+  id: ['', Validators.required],
+  nombre: ['', [Validators.required, Validators.maxLength(50)]],
+  app: ['', [Validators.required, Validators.maxLength(50)]],
+  apm: ['', [Validators.required, Validators.maxLength(50)]],
+  correo: ['', [Validators.required, Validators.email, Validators.maxLength(80)]],
+  telefono: ['', [Validators.required, Validators.maxLength(15)]],
+  rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+  estado: ['activo', Validators.required]
+});
+
 
     this.listarUsuarios();
   }
@@ -121,7 +122,7 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
       nombre: usuario.nombre,
       app: usuario.app,
       apm: usuario.apm,
-      email: usuario.correo,
+      correo: usuario.correo,
       telefono: usuario.telefono,
       rol: usuario.rol,
       estado: usuario.estado
@@ -134,7 +135,7 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
     if (this.editarForm.invalid) return;
 
     const updatedUser = { ...this.editarForm.value };
-    updatedUser.correo = updatedUser.email;
+    updatedUser.correo = updatedUser.correo;
 
     this.usuarioService.actualizarUsuario(updatedUser).subscribe({
       next: (res: any) => {
@@ -163,14 +164,16 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
 
   // Eliminar usuario
   eliminar(usuario: any) {
-    this.usuarioService.eliminarUsuario({ id: usuario.id }).subscribe({
-      next: () => {
-        this.listarUsuarios();
-        this.mostrarNotificacion('Usuario eliminado', 'success');
-      },
-      error: () => this.mostrarNotificacion('Error al eliminar usuario', 'error')
-    });
-  }
+  this.usuarioService.eliminarUsuario({ correo: usuario.correo }).subscribe({
+    next: () => {
+      this.listarUsuarios();
+      this.mostrarNotificacion('Usuario eliminado', 'success');
+    },
+    error: () => {
+      this.mostrarNotificacion('Error al eliminar usuario', 'error');
+    }
+  });
+}
 
   // Cerrar modal
   cerrarModal() {

@@ -18,7 +18,7 @@ interface ResetConCodigoResponse {
 })
 export class RecuperarService {
 
-  private apiUrl = 'http://localhost:3001/recuperar';
+  private apiUrl = 'https://appwebpro-backend.onrender.com/recuperar';
 
   constructor(private http: HttpClient) { }
 
