@@ -29,28 +29,29 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     // Formulario de creación
-    this.crearForm = this.fb.group({
-      nombre: ['', Validators.required],
-      app: ['', Validators.required],
-      apm: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
-      rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-      password: ['', Validators.required],
-      estado: ['activo', Validators.required]
-    });
+this.crearForm = this.fb.group({
+  nombre: ['', [Validators.required, Validators.maxLength(50)]],
+  app: ['', [Validators.required, Validators.maxLength(50)]],
+  apm: ['', [Validators.required, Validators.maxLength(50)]],
+  correo: ['', [Validators.required, Validators.email, Validators.maxLength(80)]],
+  telefono: ['', [Validators.required, Validators.maxLength(15)]],
+  rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+  password: ['', [Validators.required, Validators.maxLength(100)]],
+  estado: ['activo', Validators.required]
+});
 
-    // Formulario de edición
-    this.editarForm = this.fb.group({
-      id: ['', Validators.required],
-      nombre: ['', Validators.required],
-      app: ['', Validators.required],
-      apm: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
-      rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-      estado: ['activo', Validators.required]
-    });
+// Formulario de edición
+this.editarForm = this.fb.group({
+  id: ['', Validators.required],
+  nombre: ['', [Validators.required, Validators.maxLength(50)]],
+  app: ['', [Validators.required, Validators.maxLength(50)]],
+  apm: ['', [Validators.required, Validators.maxLength(50)]],
+  correo: ['', [Validators.required, Validators.email, Validators.maxLength(80)]],
+  telefono: ['', [Validators.required, Validators.maxLength(15)]],
+  rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+  estado: ['activo', Validators.required]
+});
+
 
     this.listarUsuarios();
   }

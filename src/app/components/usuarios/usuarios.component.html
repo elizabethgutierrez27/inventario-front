@@ -4,7 +4,6 @@
   [tipo]="notificacionTipo">
 </app-notificacion>
 
-
 <!-- Sección de Creación (Colapsable) -->
 <div class="crear-section" [class.collapsed]="crearCollapsed">
   <h3 (click)="crearCollapsed = !crearCollapsed">Nuevo Usuario</h3>
@@ -16,32 +15,32 @@
 
         <div class="form-group">
           <label>Correo *</label>
-          <input formControlName="correo" type="email" placeholder="ejemplo@correo.com">
+          <input formControlName="correo" type="email" placeholder="ejemplo@correo.com" maxlength="80">
         </div>
 
         <div class="form-group">
           <label>Contraseña *</label>
-          <input formControlName="password" type="password" placeholder="Mínimo 8 caracteres">
+          <input formControlName="password" type="password" placeholder="Mínimo 8 caracteres" maxlength="100">
         </div>
 
         <div class="form-group">
           <label>Nombre *</label>
-          <input formControlName="nombre" placeholder="Nombre del usuario">
+          <input formControlName="nombre" placeholder="Nombre del usuario" maxlength="50">
         </div>
 
         <div class="form-group">
           <label>Apellido Paterno *</label>
-          <input formControlName="app" placeholder="Apellido paterno">
+          <input formControlName="app" placeholder="Apellido paterno" maxlength="50">
         </div>
 
         <div class="form-group">
           <label>Apellido Materno</label>
-          <input formControlName="apm" placeholder="Apellido materno (opcional)">
+          <input formControlName="apm" placeholder="Apellido materno (opcional)" maxlength="50">
         </div>
 
         <div class="form-group">
           <label>Teléfono *</label>
-          <input formControlName="telefono" placeholder="+521234567890">
+          <input formControlName="telefono" placeholder="+521234567890" maxlength="15">
         </div>
 
         <div class="form-group">
@@ -57,7 +56,6 @@
           <input formControlName="estado" type="hidden">
         </div>
 
-
       </div>
 
       <div class="button-group">
@@ -68,6 +66,7 @@
   </div>
 
 </div>
+
 
 <!-- Lista de Usuarios (Grid estilo cards) -->
 <div class="contenedor">
@@ -128,22 +127,22 @@
 
         <div class="form-group">
           <label>Nombre</label>
-          <input formControlName="nombre">
+          <input formControlName="nombre" maxlength="50">
         </div>
 
         <div class="form-group">
           <label>Apellido Paterno</label>
-          <input formControlName="app">
+          <input formControlName="app" maxlength="50">
         </div>
 
         <div class="form-group">
           <label>Apellido Materno</label>
-          <input formControlName="apm">
+          <input formControlName="apm" maxlength="50">
         </div>
 
         <div class="form-group">
           <label>Teléfono</label>
-          <input formControlName="telefono">
+          <input formControlName="telefono" maxlength="15">
         </div>
 
         <div class="form-group">
@@ -173,3 +172,4 @@
 
   </div>
 </div>
+
