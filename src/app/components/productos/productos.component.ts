@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProductosService } from '../../services/productos.service';
 import { CategoriasService } from '../../services/categorias.service';
+import { debounceTime } from 'rxjs/operators';
+
 
 interface Producto {
   codigo: number;
@@ -71,22 +73,37 @@ export class ProductosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listarTodos();
-    this.listarCategorias();
+  this.listarTodos();
+  this.listarCategorias();
 
-    // Formulario de edición (se inicializa vacío)
-    this.editarForm = this.fb.group({
-      codigo: [''],
-      nombre: [''],
-      descripcion: [''],
-      cantidad: [0],
-      stock: [0],
-      precio: [0],
-      proveedor: [''],
-      id_categoria: [null],
-      imagen: ['']
+  this.editarForm = this.fb.group({
+    codigo: [''],
+    nombre: [''],
+    descripcion: [''],
+    cantidad: [0],
+    stock: [0],
+    precio: [0],
+    proveedor: [''],
+    id_categoria: [null],
+    imagen: ['']
+  });
+
+  this.filtrosForm.valueChanges
+    .pipe(
+      debounceTime(300) 
+    )
+    .subscribe(values => {
+      const { nombre, categoria, proveedor } = values;
+
+      if (!nombre && !categoria && !proveedor) {
+        this.listarTodos();
+        return;
+      }
+
+      this.filtrar();
     });
   }
+
 
   // ------------------------------------------------------------------
   // FILTROS
@@ -215,7 +232,7 @@ export class ProductosComponent implements OnInit {
 
     this.productoService.actualizarProducto(productoActualizado).subscribe({
       next: (res: any) => {
-        // 🟥 Validaciones de backend
+        // Validaciones de backend
         if (res.codigo === 2 && res.error?.detalle?.length > 0) {
           this.erroresEditar = {};
           let mensajesGlobales: string[] = [];
@@ -235,7 +252,7 @@ export class ProductosComponent implements OnInit {
           return;
         }
 
-        // ✅ Éxito
+        // Éxito
         alert(res.mensaje);
         if (res.codigo === 0) {
           const index = this.productos.findIndex(p => p.codigo === productoActualizado.codigo);
