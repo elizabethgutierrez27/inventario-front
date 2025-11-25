@@ -88,12 +88,12 @@ export class ProductosComponent implements OnInit {
     precio: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
     proveedor: ['', [Validators.maxLength(53)]],
     id_categoria: [null, [Validators.required]],
-
+    imagen: ['']
   });
 
   this.filtrosForm.valueChanges
     .pipe(
-      debounceTime(300) 
+      debounceTime(300)
     )
     .subscribe(values => {
       const { nombre, categoria, proveedor } = values;
@@ -182,7 +182,7 @@ export class ProductosComponent implements OnInit {
 
     this.productoService.crearProducto(producto).subscribe({
       next: (res: any) => {
-        
+
         if (res.codigo === 2 && res.error?.detalle?.length > 0) {
           this.erroresCrear = {};
           let mensajesGlobales: string[] = [];
