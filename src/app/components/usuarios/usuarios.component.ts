@@ -121,7 +121,7 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
       nombre: usuario.nombre,
       app: usuario.app,
       apm: usuario.apm,
-      email: usuario.correo,
+      correo: usuario.correo,
       telefono: usuario.telefono,
       rol: usuario.rol,
       estado: usuario.estado
@@ -134,7 +134,7 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
     if (this.editarForm.invalid) return;
 
     const updatedUser = { ...this.editarForm.value };
-    updatedUser.correo = updatedUser.email;
+    updatedUser.correo = updatedUser.correo;
 
     this.usuarioService.actualizarUsuario(updatedUser).subscribe({
       next: (res: any) => {
