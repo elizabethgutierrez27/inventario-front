@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductosService } from '../../services/productos.service';
 import { CategoriasService } from '../../services/categorias.service';
 import { debounceTime } from 'rxjs/operators';
@@ -59,17 +59,19 @@ export class ProductosComponent implements OnInit {
     });
 
     // Formulario de creación
+    // Formulario de creación con VALIDACIONES
     this.crearForm = this.fb.group({
-      codigo: [''],
-      nombre: [''],
-      descripcion: [''],
-      cantidad: [0],
-      stock: [0],
-      precio: [0],
-      proveedor: [''],
-      id_categoria: [null],
+      codigo: ['', [Validators.required, Validators.maxLength(10)]],
+      nombre: ['', [Validators.required, Validators.maxLength(53)]],
+      descripcion: ['', [Validators.maxLength(100)]],
+      cantidad: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
+      stock: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
+      precio: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
+      proveedor: ['', [Validators.maxLength(53)]],
+      id_categoria: [null, [Validators.required]],
       imagen: ['']
     });
+
   }
 
   ngOnInit(): void {
@@ -77,6 +79,16 @@ export class ProductosComponent implements OnInit {
   this.listarCategorias();
 
   this.editarForm = this.fb.group({
+
+    codigo: ['', [Validators.required, Validators.maxLength(10)]],
+    nombre: ['', [Validators.required, Validators.maxLength(53)]],
+    descripcion: ['', [Validators.maxLength(100)]],
+    cantidad: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
+    stock: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
+    precio: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
+    proveedor: ['', [Validators.maxLength(53)]],
+    id_categoria: [null, [Validators.required]],
+
     codigo: [''],
     nombre: [''],
     descripcion: [''],
@@ -300,4 +312,69 @@ export class ProductosComponent implements OnInit {
   get editarF() {
     return this.editarForm.controls;
   }
+
+  limitarDigitos(event: any, maxDigitos: number) {
+  const valor = event.target.value.toString();
+  if (valor.length > maxDigitos) {
+    const recortado = valor.slice(0, maxDigitos);
+    event.target.value = recortado;
+    // Actualiza el form control
+    const controlName = (event.target.getAttribute('formControlName'));
+    this.crearForm.get(controlName)?.setValue(recortado);
+  }
+}
+  validarDecimal(event: any) {
+  let valor = event.target.value;
+
+  // Permitir solo números y máximo 2 decimales
+  valor = valor.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+  const partes = valor.split('.');
+
+  if (partes[1]) {
+    partes[1] = partes[1].slice(0, 2);
+  }
+
+  const final = partes.join('.');
+
+  event.target.value = final;
+
+  const controlName = event.target.getAttribute('formControlName');
+  this.crearForm.get(controlName)?.setValue(final);
+}
+
+formatPrecio(event: any) {
+  const input = event.target;
+  let valor = input.value;
+
+  // Guardar posición del cursor antes del cambio
+  const cursor = input.selectionStart;
+
+  // Eliminar todo menos números y punto
+  let nuevoValor = valor.replace(/[^0-9.]/g, '');
+
+  // Solo permitir un punto decimal
+  const partes = nuevoValor.split('.');
+  if (partes.length > 2) {
+    nuevoValor = partes[0] + '.' + partes[1];
+  }
+
+  // Limitar decimales a 2
+  if (partes[1]) {
+    partes[1] = partes[1].slice(0, 2);
+    nuevoValor = partes.join('.');
+  }
+
+  // Si el texto cambió, actualizar
+  if (nuevoValor !== valor) {
+    input.value = nuevoValor;
+
+    // Ajustar posición del cursor sin que regrese al inicio
+    const nuevaPos = cursor - (valor.length - nuevoValor.length);
+    input.setSelectionRange(nuevaPos, nuevaPos);
+  }
+
+  // Actualizar FormControl sin emitir eventos extra
+  this.crearForm.get('precio')?.setValue(nuevoValor, { emitEvent: false });
+}
+
 }
