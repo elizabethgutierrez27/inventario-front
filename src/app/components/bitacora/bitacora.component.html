@@ -2,7 +2,8 @@
 <app-notificacion
   [visible]="notifVisible"
   [mensaje]="notifMensaje"
-  [tipo]="notifTipo">
+  [tipo]="notifTipo"
+>
 </app-notificacion>
 
 <h2>Bitácora de Movimientos</h2>
@@ -15,7 +16,29 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Código Producto *</label>
-          <input formControlName="id_producto" placeholder="Ej: CAM123" />
+          <select
+            formControlName="id_producto"
+            [class.error]="
+              crearForm.get('id_producto')?.invalid &&
+              crearForm.get('id_producto')?.touched
+            "
+          >
+            <option value="">-- Seleccione un producto --</option>
+            <!-- Iteramos la lista cargada desde el API -->
+            <option *ngFor="let prod of listaProductos" [value]="prod.codigo">
+              {{ prod.codigo }} - {{ prod.nombre }}
+            </option>
+          </select>
+          <!-- Mensaje de error visual simple -->
+          <small
+            class="text-error"
+            *ngIf="
+              crearForm.get('id_producto')?.invalid &&
+              crearForm.get('id_producto')?.touched
+            "
+          >
+            Debe seleccionar un producto
+          </small>
         </div>
         <div class="form-group">
           <label>Tipo Movimiento *</label>
@@ -31,6 +54,8 @@
             formControlName="cantidad"
             placeholder="0"
             min="1"
+            max="1000000"
+            (input)="validarInputCantidad('crear', $event)"
           />
         </div>
         <div class="form-group full-width">
@@ -39,6 +64,7 @@
             formControlName="descripcion"
             placeholder="Descripción del movimiento..."
             rows="3"
+            maxlength="150"
           ></textarea>
         </div>
       </div>

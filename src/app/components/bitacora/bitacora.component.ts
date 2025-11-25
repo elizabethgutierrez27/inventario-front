@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BitacoraService, Movimiento } from '../../services/bitacora.service';
 
+import { ProductosService } from '../../services/productos.service';
+
 @Component({
   selector: 'app-bitacora',
   templateUrl: './bitacora.component.html',
@@ -9,6 +11,7 @@ import { BitacoraService, Movimiento } from '../../services/bitacora.service';
 })
 export class BitacoraComponent {
   movimientos: Movimiento[] = [];
+  listaProductos: any[] = [];
 
   crearForm!: FormGroup;
   editarForm!: FormGroup;
@@ -23,6 +26,7 @@ export class BitacoraComponent {
 
   constructor(
     private readonly bitacoraService: BitacoraService,
+    private readonly productosService: ProductosService,
     private readonly fb: FormBuilder
   ) {
     this.inicializarFormularios();
@@ -30,15 +34,40 @@ export class BitacoraComponent {
 
   ngOnInit(): void {
     this.listarTodos();
+
+    this.cargarProductos();
+  }
+
+  cargarProductos() {
+    this.productosService.listarProductos().subscribe({
+      next: (res: any) => {
+        // Usamos la misma lógica que tenías en ProductosComponent
+        // para asegurar compatibilidad con la respuesta del API
+        this.listaProductos = res.lista || res.productos || [];
+      },
+      error: (err) => {
+        console.error('Error al cargar productos para el selector', err);
+      },
+    });
   }
 
   inicializarFormularios(): void {
     // Formulario de creación
     this.crearForm = this.fb.group({
-      id_producto: ['', [Validators.required, Validators.minLength(3)]],
+      id_producto: ['', [Validators.required]],
       tipo_movimiento: ['entrada', [Validators.required]],
-      cantidad: [1, [Validators.required, Validators.min(1)]],
-      descripcion: ['', [Validators.required, Validators.minLength(5)]],
+      cantidad: [
+        1,
+        [Validators.required, Validators.min(1), Validators.max(1000000)],
+      ],
+      descripcion: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(150),
+        ],
+      ],
     });
 
     // Formulario de edición
@@ -47,6 +76,25 @@ export class BitacoraComponent {
       cantidad: [0, [Validators.required, Validators.min(1)]],
       descripcion: ['', [Validators.required, Validators.minLength(5)]],
     });
+  }
+
+  validarInputCantidad(tipo: 'crear' | 'editar', event: any) {
+    const input = event.target as HTMLInputElement;
+    
+    // Si la longitud supera los 6 caracteres (ej: 1234567)
+    if (input.value.length > 6) {
+      // 1. Cortamos el texto y dejamos solo los primeros 6 números
+      input.value = input.value.slice(0, 6);
+      
+      // 2. Actualizamos el valor en el formulario de Angular
+      const valorCorregido = parseFloat(input.value);
+
+      if (tipo === 'crear') {
+        this.crearForm.get('cantidad')?.setValue(valorCorregido);
+      } else {
+        this.editarForm.get('cantidad')?.setValue(valorCorregido);
+      }
+    }
   }
 
   // Método para mostrar notificaciones
