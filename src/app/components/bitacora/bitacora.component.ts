@@ -18,6 +18,7 @@ export class BitacoraComponent {
 
   crearCollapsed = true;
   movimientoEnEdicion: Movimiento | null = null;
+  movimientoAEliminar: Movimiento | null = null;
 
   // Propiedades para notificaciones
   notifVisible = false;
@@ -45,7 +46,7 @@ export class BitacoraComponent {
         this.listaProductos = res.lista || res.productos || [];
       },
       error: (err) => {
-        //console.error('Error al cargar productos para el selector', err);
+        console.error('Error al cargar productos para el selector', err);
       },
     });
   }
@@ -79,12 +80,12 @@ export class BitacoraComponent {
 
   validarInputCantidad(tipo: 'crear' | 'editar', event: any) {
     const input = event.target as HTMLInputElement;
-    
+
     // Si la longitud supera los 6 caracteres (ej: 1234567)
     if (input.value.length > 6) {
       // 1. Cortamos el texto y dejamos solo los primeros 6 números
       input.value = input.value.slice(0, 6);
-      
+
       // 2. Actualizamos el valor en el formulario de Angular
       const valorCorregido = parseFloat(input.value);
 
@@ -160,13 +161,13 @@ export class BitacoraComponent {
           this.movimientos = res.movimientos;
         } else {
           this.movimientos = [];
-          //console.warn('Formato de respuesta inesperado:', res);
+          console.warn('Formato de respuesta inesperado:', res);
         }
 
-        //console.log('Movimientos cargados:', this.movimientos);
+        console.log('Movimientos cargados:', this.movimientos);
       },
       error: (err) => {
-        //console.error('Error al cargar movimientos:', err);
+        console.error('Error al cargar movimientos:', err);
         this.mostrarNotificacion(
           'Error de conexión al cargar la bitácora',
           'error'
@@ -242,11 +243,11 @@ export class BitacoraComponent {
       ...this.editarForm.value,
     };
 
-    //console.log('📤 Enviando al backend:', movimientoActualizado);
+    console.log('📤 Enviando al backend:', movimientoActualizado);
 
     this.bitacoraService.actualizarMovimiento(movimientoActualizado).subscribe({
       next: (res: any) => {
-        //console.log('📥 Respuesta del servidor:', res);
+        console.log('📥 Respuesta del servidor:', res);
 
         if (res.codigo === 0) {
           this.mostrarNotificacion(
@@ -261,7 +262,7 @@ export class BitacoraComponent {
         }
       },
       error: (err) => {
-        //console.error('❌ Error al actualizar movimiento:', err);
+        console.error('❌ Error al actualizar movimiento:', err);
         this.mostrarNotificacion(
           'Error de conexión al actualizar movimiento',
           'error'
@@ -272,15 +273,16 @@ export class BitacoraComponent {
 
   // Eliminar movimiento
   eliminar(movimiento: Movimiento): void {
-    if (
-      !confirm(
-        `¿Está seguro de eliminar el movimiento del producto "${movimiento.codigo_producto}"?`
-      )
-    ) {
-      return;
-    }
+    this.movimientoAEliminar = movimiento;
+  }
 
-    this.bitacoraService.eliminarMovimiento(movimiento.id!).subscribe({
+  // AGREGAR: Este método realiza la eliminación real
+  confirmarEliminacion(): void {
+    if (!this.movimientoAEliminar) return;
+
+    const id = this.movimientoAEliminar.id!;
+
+    this.bitacoraService.eliminarMovimiento(id).subscribe({
       next: (res: any) => {
         if (res.codigo === 0) {
           this.mostrarNotificacion(
@@ -288,13 +290,14 @@ export class BitacoraComponent {
             'success'
           );
           this.listarTodos();
+          this.cerrarModalEliminar(); // Cerramos el modal
         } else {
           const mensajeError = this.extraerMensajeError(res);
           this.mostrarNotificacion(mensajeError, 'error');
         }
       },
       error: (err) => {
-        //console.error('Error al eliminar movimiento:', err);
+        console.error('Error al eliminar movimiento:', err);
         this.mostrarNotificacion(
           'Error de conexión al eliminar movimiento',
           'error'
@@ -303,6 +306,10 @@ export class BitacoraComponent {
     });
   }
 
+  // AGREGAR: Método para cerrar/cancelar
+  cerrarModalEliminar(): void {
+    this.movimientoAEliminar = null;
+  }
   // Cerrar modal de edición
   cerrarModal(): void {
     this.movimientoEnEdicion = null;
