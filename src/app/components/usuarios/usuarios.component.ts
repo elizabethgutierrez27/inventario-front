@@ -46,17 +46,20 @@ export class UsuariosComponent implements OnInit {
 
   nombre: ['', [
     Validators.required,
+    Validators.minLength(3),
     Validators.maxLength(50),
     Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
   ]],
 
   app: ['', [
     Validators.required,
+    Validators.minLength(3),
     Validators.maxLength(50),
     Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
   ]],
 
   apm: ['', [
+    Validators.minLength(3),
     Validators.maxLength(50),
     Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
   ]],
