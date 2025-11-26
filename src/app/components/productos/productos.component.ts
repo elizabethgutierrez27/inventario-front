@@ -46,6 +46,12 @@ export class ProductosComponent implements OnInit {
   erroresCrear: any = {};
   erroresEditar: any = {};
 
+  // Notificaciones
+  notifVisible = false;
+  notifMensaje = '';
+  notifTipo: 'success' | 'error' = 'success';
+
+
   constructor(
     private productoService: ProductosService,
     private categoriaService: CategoriasService,
@@ -88,22 +94,18 @@ export class ProductosComponent implements OnInit {
     precio: [0, [Validators.required, Validators.min(0), Validators.max(999999)]],
     proveedor: ['', [Validators.maxLength(53)]],
     id_categoria: [null, [Validators.required]],
-
+    imagen: ['']
   });
 
   this.filtrosForm.valueChanges
-    .pipe(
-      debounceTime(300) 
-    )
+    .pipe(debounceTime(300))
     .subscribe(values => {
       const { nombre, categoria, proveedor } = values;
-
-      if (!nombre && !categoria && !proveedor) {
+      if (nombre || categoria || proveedor) {
+        this.filtrar();
+      } else {
         this.listarTodos();
-        return;
       }
-
-      this.filtrar();
     });
   }
 
@@ -114,7 +116,7 @@ export class ProductosComponent implements OnInit {
   filtrar() {
     const filtros = this.filtrosForm.value;
     if (!filtros.nombre && !filtros.categoria && !filtros.proveedor) {
-      alert('Debe enviar al menos un campo para filtrar');
+      this.mostrarNotificacion('Debe enviar al menos un campo para filtrar', 'error');
       return;
     }
 
@@ -123,13 +125,12 @@ export class ProductosComponent implements OnInit {
         if (res.codigo === 0) {
           this.productos = res.productos;
         } else {
-          alert(res.mensaje || 'Error al filtrar productos');
+          this.mostrarNotificacion(res.mensaje || 'Error al filtrar productos', 'error');
         }
       },
       error: (err) => {
-        console.error(err);
-        alert('Error de conexión al filtrar productos');
-      }
+        this.mostrarNotificacion('Error de conexión al filtrar productos', 'error');
+}
     });
   }
 
@@ -151,9 +152,8 @@ export class ProductosComponent implements OnInit {
       next: (res: any) => {
         this.productos = res.lista || res.productos || [];
       },
-      error: (err) => {
-        console.error(err);
-        alert('Error de conexión al cargar productos');
+      error: () => {
+        this.mostrarNotificacion('Error de conexión al cargar productos', 'error');
       }
     });
   }
@@ -166,9 +166,8 @@ export class ProductosComponent implements OnInit {
           this.crearForm.patchValue({ id_categoria: this.categorias[0].id });
         }
       },
-      error: (err) => {
-        console.error(err);
-        alert('Error de conexión al cargar categorías');
+      error: () => {
+        this.mostrarNotificacion('Error al cargar categorías', 'error');
       }
     });
   }
@@ -182,28 +181,14 @@ export class ProductosComponent implements OnInit {
 
     this.productoService.crearProducto(producto).subscribe({
       next: (res: any) => {
-        
-        if (res.codigo === 2 && res.error?.detalle?.length > 0) {
-          this.erroresCrear = {};
-          let mensajesGlobales: string[] = [];
-
-          for (let err of res.error.detalle) {
-            if (err.campo) {
-              this.erroresCrear[err.campo] = err.mensaje;
-            } else {
-              mensajesGlobales.push(err.mensaje);
-            }
-          }
-
-          if (mensajesGlobales.length > 0) {
-            alert(mensajesGlobales.join('\n'));
-          }
+        if (res.codigo === 2) {
+          const msg = this.extraerMensajeError(res);
+          this.mostrarNotificacion(msg, 'error');
           return;
         }
 
-        // ✅ Éxito
-        alert(res.mensaje);
         if (res.codigo === 0) {
+          this.mostrarNotificacion(res.mensaje || 'Producto creado correctamente', 'success');
           this.listarTodos();
           this.crearForm.reset({
             id_categoria: this.categorias[0]?.id,
@@ -213,10 +198,10 @@ export class ProductosComponent implements OnInit {
           });
         }
       },
-      error: (err) => {
-        console.error(err);
-        alert('Error de conexión al crear producto');
+      error: () => {
+        this.mostrarNotificacion('Error de conexión al crear producto', 'error');
       }
+
     });
   }
 
@@ -235,43 +220,22 @@ export class ProductosComponent implements OnInit {
 
     this.productoService.actualizarProducto(productoActualizado).subscribe({
       next: (res: any) => {
-        // Validaciones de backend
-        if (res.codigo === 2 && res.error?.detalle?.length > 0) {
-          this.erroresEditar = {};
-          let mensajesGlobales: string[] = [];
-
-          for (let err of res.error.detalle) {
-            if (typeof err === 'string') {
-              mensajesGlobales.push(err);
-            } else if (err.campo) {
-              this.erroresEditar[err.campo] = err.mensaje;
-            }
-          }
-
-          if (mensajesGlobales.length > 0) {
-            alert(mensajesGlobales.join('\n'));
-          }
-
+        if (res.codigo === 2) {
+          const msg = this.extraerMensajeError(res);
+          this.mostrarNotificacion(msg, 'error');
           return;
         }
 
-        // Éxito
-        alert(res.mensaje);
         if (res.codigo === 0) {
-          const index = this.productos.findIndex(p => p.codigo === productoActualizado.codigo);
-          if (index !== -1) {
-            const actualizado = res.producto;
-            actualizado.categoria_nombre =
-              this.categorias.find(c => c.id === actualizado.id_categoria)?.nombre || '';
-            this.productos[index] = actualizado;
-          }
+          this.mostrarNotificacion(res.mensaje || 'Producto actualizado', 'success');
+          this.listarTodos();
           this.cerrarModal();
         }
       },
-      error: (err) => {
-        console.error(err);
-        alert('Error de conexión al actualizar producto');
+      error: () => {
+        this.mostrarNotificacion('Error de conexión al actualizar producto', 'error');
       }
+
     });
   }
 
@@ -282,13 +246,13 @@ export class ProductosComponent implements OnInit {
     if (!confirm(`¿Deseas eliminar el producto "${producto.nombre}"?`)) return;
     this.productoService.eliminarProducto(String(producto.codigo)).subscribe({
       next: (res: any) => {
-        alert(res.mensaje || 'Producto eliminado correctamente');
+        this.mostrarNotificacion(res.mensaje || 'Producto eliminado', 'success');
         this.listarTodos();
       },
-      error: (err) => {
-        console.error(err);
-        alert('Error de conexión al eliminar producto');
+      error: () => {
+        this.mostrarNotificacion('Error de conexión al eliminar producto', 'error');
       }
+
     });
   }
 
@@ -367,5 +331,43 @@ formatPrecio(event: any) {
   // Actualizar FormControl sin emitir eventos extra
   this.crearForm.get('precio')?.setValue(nuevoValor, { emitEvent: false });
 }
+
+mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
+  this.notifMensaje = mensaje;
+  this.notifTipo = tipo;
+  this.notifVisible = true;
+
+  // Ocultar después de 5s
+  setTimeout(() => {
+    this.notifVisible = false;
+  }, 5000);
+}
+
+private extraerMensajeError(res: any): string {
+  if (res?.error) {
+    const mensajes: string[] = [];
+
+    if (Array.isArray(res.error.detalle)) {
+      for (let e of res.error.detalle) {
+        if (typeof e === 'string') {
+          mensajes.push(e);
+        } else if (e.campo && e.mensaje) {
+          mensajes.push(`${e.campo}: ${e.mensaje}`);
+        }
+      }
+    }
+
+    if (mensajes.length > 0) {
+      return mensajes.join('\n');
+    }
+
+    if (res.error.mensaje) return res.error.mensaje;
+  }
+
+  if (res?.mensaje) return res.mensaje;
+
+  return 'Error en la operación';
+}
+
 
 }

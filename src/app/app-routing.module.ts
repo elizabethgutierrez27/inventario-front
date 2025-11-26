@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'personal', component: PersonalComponent, canActivate: [authGuard] },
   { path: 'barra', component: BarraComponent, canActivate: [authGuard] },
   { path: 'reportes', component: ReportesComponent, canActivate: [authGuard] },
-  { path: 'productos', component: ProductosComponent, canActivate: [authGuard] },
+  { path: 'productos', component: ProductosComponent, canActivate: [authGuard]  },
   { path: 'usuarios', component: UsuariosComponent, canActivate: [authGuard] },
   { path: 'bitacora', component: BitacoraComponent, canActivate: [authGuard] },
   { path: 'verproductos', component: VerproductosComponent, canActivate: [authGuard] }

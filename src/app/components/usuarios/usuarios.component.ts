@@ -17,10 +17,10 @@ export class UsuariosComponent implements OnInit {
 
   usuarios: any[] = [];
 
-  // Variables para notificación
-  notifVisible = false;
-  notifMensaje = '';
-  notifTipo: 'success' | 'error' = 'success';
+  // Variables correctas para notificación (USAR SOLO ESTAS)
+  notificacionVisible = false;
+  notificacionMensaje = '';
+  notificacionTipo: 'success' | 'error' = 'success';
 
   constructor(
     private fb: FormBuilder,
@@ -29,45 +29,168 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     // Formulario de creación
-this.crearForm = this.fb.group({
-  nombre: ['', [Validators.required, Validators.maxLength(50)]],
-  app: ['', [Validators.required, Validators.maxLength(50)]],
-  apm: ['', [Validators.required, Validators.maxLength(50)]],
-  correo: ['', [Validators.required, Validators.email, Validators.maxLength(80)]],
-  telefono: ['', [Validators.required, Validators.maxLength(15)]],
-  rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-  password: ['', [Validators.required, Validators.maxLength(100)]],
+    this.crearForm = this.fb.group({
+  correo: ['', [
+    Validators.required,
+    Validators.email,
+    Validators.maxLength(80),
+    Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+  ]],
+
+  password: ['', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.maxLength(100),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
+  ]],
+
+  nombre: ['', [
+    Validators.required,
+    Validators.maxLength(50),
+    Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
+  ]],
+
+  app: ['', [
+    Validators.required,
+    Validators.maxLength(50),
+    Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
+  ]],
+
+  apm: ['', [
+    Validators.maxLength(50),
+    Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
+  ]],
+
+  telefono: ['', [
+    Validators.required,
+    Validators.maxLength(15),
+    Validators.pattern(/^\+52\d{10}$/)
+  ]],
+
+  rol: ['user', [
+    Validators.required,
+    Validators.pattern(/^(admin|user)$/)
+  ]],
+
   estado: ['activo', Validators.required]
 });
 
-// Formulario de edición
-this.editarForm = this.fb.group({
-  id: ['', Validators.required],
-  nombre: ['', [Validators.required, Validators.maxLength(50)]],
-  app: ['', [Validators.required, Validators.maxLength(50)]],
-  apm: ['', [Validators.required, Validators.maxLength(50)]],
-  correo: ['', [Validators.required, Validators.email, Validators.maxLength(80)]],
-  telefono: ['', [Validators.required, Validators.maxLength(15)]],
-  rol: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-  estado: ['activo', Validators.required]
-});
 
+
+    // Formulario de edición
+    this.editarForm = this.fb.group({
+      id: ['', Validators.required],
+      correo: ['', [
+    Validators.required,
+    Validators.email,
+    Validators.maxLength(80),
+    Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+  ]],
+
+  password: ['', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.maxLength(100),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
+  ]],
+
+  nombre: ['', [
+    Validators.required,
+    Validators.maxLength(50),
+    Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
+  ]],
+
+  app: ['', [
+    Validators.required,
+    Validators.maxLength(50),
+    Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
+  ]],
+
+  apm: ['', [
+    Validators.maxLength(50),
+    Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúÑñ]+)*$/)
+  ]],
+
+  telefono: ['', [
+    Validators.required,
+    Validators.maxLength(15),
+    Validators.pattern(/^\+52\d{10}$/)
+  ]],
+
+  rol: ['user', [
+    Validators.required,
+    Validators.pattern(/^(admin|user)$/)
+  ]],
+
+  estado: ['activo', Validators.required]
+    });
 
     this.listarUsuarios();
   }
 
-  notificacionVisible = false;
-notificacionMensaje = '';
-notificacionTipo: 'success' | 'error' = 'success';
+ getError(form: FormGroup, controlName: string): string | null {
+  const control = form.get(controlName);
 
-mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
-  this.notificacionMensaje = mensaje;
-  this.notificacionTipo = tipo;
-  this.notificacionVisible = true;
+  if (!control || !(control.touched || control.dirty) || !control.errors) {
+    return null;
+  }
 
-  setTimeout(() => this.notificacionVisible = false, 5000);
+  const errors = control.errors;
+
+  // -------- CAMPOS OBLIGATORIOS --------
+  if (errors['required']) {
+    switch (controlName) {
+      case 'correo': return 'Correo es obligatorio';
+      case 'password': return 'Contraseña es obligatoria';
+      case 'rol': return 'Rol es obligatorio';
+      case 'estado': return 'Estado es obligatorio';
+      case 'nombre': return 'Nombre es obligatorio';
+      case 'telefono': return 'Teléfono es obligatorio';
+      default: return 'Campo obligatorio';
+    }
+  }
+
+  // -------- EMAIL --------
+  if (errors['email']) return 'El correo no es válido';
+
+  // -------- LONGITUD MÁXIMA --------
+  if (errors['maxlength']) {
+    return `Máximo ${errors['maxlength'].requiredLength} caracteres.`;
+  }
+
+  // -------- LONGITUD MÍNIMA --------
+  if (errors['minlength']) {
+    return `Mínimo ${errors['minlength'].requiredLength} caracteres.`;
+  }
+
+  // -------- VALIDACIONES DE BACKEND (regex específicos) --------
+
+  // Nombre y apellidos solo letras
+  if (errors['pattern']) {
+    if (controlName === 'nombre') return 'El nombre solo puede contener letras y espacios';
+    if (controlName === 'app') return 'El apellido paterno solo puede contener letras y espacios';
+    if (controlName === 'apm') return 'El apellido materno solo puede contener letras y espacios';
+    if (controlName === 'telefono') return 'El teléfono debe incluir código +52 y 10 dígitos';
+    if (controlName === 'password') {
+      return 'La contraseña debe tener mínimo 8 caracteres, incluir mayúscula, minúscula, número y símbolo';
+    }
+    return 'Formato no permitido';
+  }
+
+  return null;
 }
 
+
+
+
+  // Método único para mostrar la notificación
+  mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
+    this.notificacionMensaje = mensaje;
+    this.notificacionTipo = tipo;
+    this.notificacionVisible = true;
+
+    setTimeout(() => this.notificacionVisible = false, 5000);
+  }
 
   // Listar usuarios
   listarUsuarios() {
@@ -76,7 +199,10 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
         if (res.codigo === 0) {
           this.usuarios = res.usuarios;
         } else {
-          this.mostrarNotificacion(res.error?.mensaje || 'Error al listar usuarios', 'error');
+          this.mostrarNotificacion(
+            res.error?.mensaje || 'Error al listar usuarios',
+            'error'
+          );
         }
       },
       error: () => this.mostrarNotificacion('Error al conectar con el servidor', 'error')
@@ -90,8 +216,8 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
     this.usuarioService.crearUsuario(this.crearForm.value).subscribe({
       next: (res: any) => {
         if (res.codigo !== 0) {
-          // Manejo completo de errores del backend
           let mensaje = '';
+
           if (Array.isArray(res.error?.detalle)) {
             mensaje = res.error.detalle.join(', ');
           } else if (res.error?.detalle) {
@@ -101,11 +227,11 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
           } else {
             mensaje = 'Error al crear usuario';
           }
+
           this.mostrarNotificacion(mensaje, 'error');
           return;
         }
 
-        // Usuario creado correctamente
         this.crearForm.reset({ estado: 'activo', rol: 'user' });
         this.listarUsuarios();
         this.mostrarNotificacion('Usuario creado con éxito', 'success');
@@ -117,7 +243,8 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
   // Abrir modal de edición
   editar(usuario: any) {
     this.usuarioEnEdicion = usuario;
-    const formValue = {
+
+    this.editarForm.patchValue({
       id: usuario.id,
       nombre: usuario.nombre,
       app: usuario.app,
@@ -126,8 +253,7 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
       telefono: usuario.telefono,
       rol: usuario.rol,
       estado: usuario.estado
-    };
-    this.editarForm.patchValue(formValue);
+    });
   }
 
   // Guardar cambios de usuario
@@ -135,12 +261,12 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
     if (this.editarForm.invalid) return;
 
     const updatedUser = { ...this.editarForm.value };
-    updatedUser.correo = updatedUser.correo;
 
     this.usuarioService.actualizarUsuario(updatedUser).subscribe({
       next: (res: any) => {
         if (res.codigo !== 0) {
           let mensaje = '';
+
           if (Array.isArray(res.error?.detalle)) {
             mensaje = res.error.detalle.join(', ');
           } else if (res.error?.detalle) {
@@ -150,6 +276,7 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
           } else {
             mensaje = 'Error al actualizar usuario';
           }
+
           this.mostrarNotificacion(mensaje, 'error');
           return;
         }
@@ -164,18 +291,15 @@ mostrarNotificacion(mensaje: string, tipo: 'success' | 'error' = 'success') {
 
   // Eliminar usuario
   eliminar(usuario: any) {
-  this.usuarioService.eliminarUsuario({ correo: usuario.correo }).subscribe({
-    next: () => {
-      this.listarUsuarios();
-      this.mostrarNotificacion('Usuario eliminado', 'success');
-    },
-    error: () => {
-      this.mostrarNotificacion('Error al eliminar usuario', 'error');
-    }
-  });
-}
+    this.usuarioService.eliminarUsuario({ correo: usuario.correo }).subscribe({
+      next: () => {
+        this.listarUsuarios();
+        this.mostrarNotificacion('Usuario eliminado', 'success');
+      },
+      error: () => this.mostrarNotificacion('Error al eliminar usuario', 'error')
+    });
+  }
 
-  // Cerrar modal
   cerrarModal() {
     this.usuarioEnEdicion = null;
   }

@@ -34,7 +34,6 @@ export class BitacoraComponent {
 
   ngOnInit(): void {
     this.listarTodos();
-
     this.cargarProductos();
   }
 
@@ -46,7 +45,7 @@ export class BitacoraComponent {
         this.listaProductos = res.lista || res.productos || [];
       },
       error: (err) => {
-        console.error('Error al cargar productos para el selector', err);
+        //console.error('Error al cargar productos para el selector', err);
       },
     });
   }
@@ -161,13 +160,13 @@ export class BitacoraComponent {
           this.movimientos = res.movimientos;
         } else {
           this.movimientos = [];
-          console.warn('Formato de respuesta inesperado:', res);
+          //console.warn('Formato de respuesta inesperado:', res);
         }
 
-        console.log('Movimientos cargados:', this.movimientos);
+        //console.log('Movimientos cargados:', this.movimientos);
       },
       error: (err) => {
-        console.error('Error al cargar movimientos:', err);
+        //console.error('Error al cargar movimientos:', err);
         this.mostrarNotificacion(
           'Error de conexión al cargar la bitácora',
           'error'
@@ -213,8 +212,6 @@ export class BitacoraComponent {
         }
       },
       error: (err) => {
-        // 🔥 Solo entra aquí si hay fallo de red o no responde el servidor
-        console.error('Error de conexión o backend caído:', err);
         this.mostrarNotificacion('Error de conexión con el servidor', 'error');
       },
     });
@@ -245,11 +242,11 @@ export class BitacoraComponent {
       ...this.editarForm.value,
     };
 
-    console.log('📤 Enviando al backend:', movimientoActualizado);
+    //console.log('📤 Enviando al backend:', movimientoActualizado);
 
     this.bitacoraService.actualizarMovimiento(movimientoActualizado).subscribe({
       next: (res: any) => {
-        console.log('📥 Respuesta del servidor:', res);
+        //console.log('📥 Respuesta del servidor:', res);
 
         if (res.codigo === 0) {
           this.mostrarNotificacion(
@@ -264,7 +261,7 @@ export class BitacoraComponent {
         }
       },
       error: (err) => {
-        console.error('❌ Error al actualizar movimiento:', err);
+        //console.error('❌ Error al actualizar movimiento:', err);
         this.mostrarNotificacion(
           'Error de conexión al actualizar movimiento',
           'error'
@@ -297,7 +294,7 @@ export class BitacoraComponent {
         }
       },
       error: (err) => {
-        console.error('Error al eliminar movimiento:', err);
+        //console.error('Error al eliminar movimiento:', err);
         this.mostrarNotificacion(
           'Error de conexión al eliminar movimiento',
           'error'

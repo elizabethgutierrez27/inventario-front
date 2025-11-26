@@ -889,3 +889,14 @@ button {
     font-size: 1.3rem;
   }
 }
+
+
+.error {
+  color: #d62828;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.error span {
+  display: block;
+}

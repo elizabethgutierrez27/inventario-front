@@ -11,58 +11,101 @@
   <div class="crear-content">
     <form [formGroup]="crearForm" (ngSubmit)="crear()">
 
-      <div class="form-grid">
+  <div class="form-grid">
 
-        <div class="form-group">
-          <label>Correo *</label>
-          <input formControlName="correo" type="email" placeholder="ejemplo@correo.com" maxlength="80">
-        </div>
+    <!-- CORREO -->
+    <div class="form-group">
+      <label>Correo *</label>
+      <input formControlName="correo" type="email" placeholder="ejemplo@correo.com" maxlength="80">
 
-        <div class="form-group">
-          <label>Contraseña *</label>
-          <input formControlName="password" type="password" placeholder="Mínimo 8 caracteres" maxlength="100">
-        </div>
+     <div class="error" *ngIf="getError(crearForm, 'correo')">
+  {{ getError(crearForm, 'correo') }}
+</div>
 
-        <div class="form-group">
-          <label>Nombre *</label>
-          <input formControlName="nombre" placeholder="Nombre del usuario" maxlength="50">
-        </div>
+    </div>
 
-        <div class="form-group">
-          <label>Apellido Paterno *</label>
-          <input formControlName="app" placeholder="Apellido paterno" maxlength="50">
-        </div>
+    <!-- CONTRASEÑA -->
+    <div class="form-group">
+      <label>Contraseña *</label>
+      <input formControlName="password" type="password" placeholder="Mínimo 8 caracteres" maxlength="100">
 
-        <div class="form-group">
-          <label>Apellido Materno</label>
-          <input formControlName="apm" placeholder="Apellido materno (opcional)" maxlength="50">
-        </div>
+      <div class="error" *ngIf="getError(crearForm, 'password')">
+  {{ getError(crearForm, 'password') }}
+</div>
 
-        <div class="form-group">
-          <label>Teléfono *</label>
-          <input formControlName="telefono" placeholder="+521234567890" maxlength="15">
-        </div>
+    </div>
 
-        <div class="form-group">
-          <label>Rol *</label>
-          <select formControlName="rol">
-            <option value="user">Usuario</option>
-            <option value="admin">Administrador</option>
-          </select>
-        </div>
+    <!-- NOMBRE -->
+    <div class="form-group">
+      <label>Nombre *</label>
+      <input formControlName="nombre" placeholder="Nombre del usuario" maxlength="50">
 
-        <div class="form-group" style="display:none">
-          <label>Estado</label>
-          <input formControlName="estado" type="hidden">
-        </div>
+      <div class="error" *ngIf="getError(crearForm, 'nombre')">
+  {{ getError(crearForm, 'nombre') }}
+</div>
 
-      </div>
+    </div>
 
-      <div class="button-group">
-        <button type="submit" class="btn-primary">Crear Usuario</button>
-      </div>
+    <!-- APELLIDO PATERNO -->
+    <div class="form-group">
+      <label>Apellido Paterno *</label>
+      <input formControlName="app" placeholder="Apellido paterno" maxlength="50">
 
-    </form>
+      <div class="error" *ngIf="getError(crearForm, 'app')">
+  {{ getError(crearForm, 'app') }}
+</div>
+
+    </div>
+
+    <!-- APELLIDO MATERNO -->
+    <div class="form-group">
+      <label>Apellido Materno</label>
+      <input formControlName="apm" placeholder="Apellido materno (opcional)" maxlength="50">
+
+      <div class="error" *ngIf="getError(crearForm, 'apm')">
+  {{ getError(crearForm, 'apm') }}
+</div>
+
+    </div>
+
+    <!-- TELÉFONO -->
+    <div class="form-group">
+      <label>Teléfono *</label>
+      <input formControlName="telefono" placeholder="+521234567890" maxlength="15">
+
+      <div class="error" *ngIf="getError(crearForm, 'telefono')">
+      {{ getError(crearForm, 'telefono') }}
+    </div>
+
+    </div>
+
+    <!-- ROL -->
+    <div class="form-group">
+      <label>Rol *</label>
+      <select formControlName="rol">
+        <option value="user">Usuario</option>
+        <option value="admin">Administrador</option>
+      </select>
+
+      <div class="error" *ngIf="getError(crearForm, 'rol')">
+  {{ getError(crearForm, 'rol') }}
+</div>
+
+    </div>
+
+    <div class="form-group" style="display:none">
+      <label>Estado</label>
+      <input formControlName="estado" type="hidden">
+    </div>
+
+  </div>
+
+  <div class="button-group">
+    <button type="submit" class="btn-primary">Crear Usuario</button>
+  </div>
+
+</form>
+
   </div>
 
 </div>
@@ -128,21 +171,33 @@
         <div class="form-group">
           <label>Nombre</label>
           <input formControlName="nombre" maxlength="50">
+          <div class="error" *ngIf="getError(editarForm, 'nombre')">
+  {{ getError(editarForm, 'nombre') }}
+</div>
         </div>
 
         <div class="form-group">
           <label>Apellido Paterno</label>
           <input formControlName="app" maxlength="50">
+          <div class="error" *ngIf="getError(editarForm, 'app')">
+            {{ getError(editarForm, 'app') }}
+          </div>
         </div>
 
         <div class="form-group">
           <label>Apellido Materno</label>
           <input formControlName="apm" maxlength="50">
+          <div class="error" *ngIf="getError(editarForm, 'apm')">
+            {{ getError(editarForm, 'apm') }}
+          </div>
         </div>
 
         <div class="form-group">
           <label>Teléfono</label>
           <input formControlName="telefono" maxlength="15">
+          <div class="error" *ngIf="getError(editarForm, 'telefono')">
+            {{ getError(editarForm, 'telefono') }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -151,6 +206,9 @@
             <option value="user">Usuario</option>
             <option value="admin">Administrador</option>
           </select>
+          <div class="error" *ngIf="getError(crearForm, 'rol')">
+            {{ getError(crearForm, 'rol') }}
+          </div>
         </div>
 
         <div class="form-group">
@@ -159,6 +217,9 @@
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
           </select>
+          <div class="error" *ngIf="getError(editarForm, 'estado')">
+            {{ getError(editarForm, 'estado') }}
+          </div>
         </div>
 
       </div>

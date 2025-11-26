@@ -16,7 +16,7 @@ export interface Movimiento {
 })
 export class BitacoraService {
   private readonly baseURL = 'https://appwebpro-backend.onrender.com/bitacora';
-
+  //private readonly baseURL = 'http://localhost:3000/bitacora';
   constructor(private readonly http: HttpClient) {}
 
   // Crear nuevo movimiento

@@ -1,9 +1,15 @@
+<app-notificacion
+  [visible]="notifVisible"
+  [mensaje]="notifMensaje"
+  [tipo]="notifTipo">
+</app-notificacion>
+
 <h2>Productos</h2>
 
 <!-- Sección de Filtros (Compacto y Horizontal) -->
 <div class="filtros-section">
   <h3>Buscar Productos</h3>
-  <form [formGroup]="filtrosForm" (ngSubmit)="filtrar()">
+  <form [formGroup]="filtrosForm">
     <div class="filtros-row">
       <div class="form-group">
         <label>Nombre</label>
@@ -18,7 +24,7 @@
         <input formControlName="proveedor" placeholder="Buscar por proveedor...">
       </div>
       <div class="button-group">
-        <button type="submit" class="btn-primary">Filtrar</button>
+        <button type="button" class="btn-primary" (click)="filtrar()">Filtrar</button>
         <button type="button" class="btn-secondary" (click)="listarTodos()">Limpiar</button>
       </div>
     </div>
