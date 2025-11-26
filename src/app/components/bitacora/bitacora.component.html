@@ -192,3 +192,54 @@
     </form>
   </div>
 </div>
+
+<div class="modal" *ngIf="movimientoAEliminar">
+  <div class="modal-content">
+    <h3>Confirmar Eliminación</h3>
+
+    <div
+      class="info-readonly"
+      style="background: #fff5f5; border-color: #e74c3c"
+    >
+      <p style="color: #555; margin-bottom: 1rem">
+        ¿Está seguro que desea eliminar este registro permanentemente?
+      </p>
+
+      <div class="info-item">
+        <label>Producto:</label>
+        <span>{{ movimientoAEliminar.codigo_producto }}</span>
+      </div>
+      <div class="info-item">
+        <label>Tipo:</label>
+        <span
+          [style.color]="
+            movimientoAEliminar.tipo_movimiento === 'entrada' ? 'green' : 'red'
+          "
+        >
+          {{ movimientoAEliminar.tipo_movimiento | titlecase }}
+        </span>
+      </div>
+      <div class="info-item">
+        <label>Cantidad:</label>
+        <span>{{ movimientoAEliminar.cantidad }}</span>
+      </div>
+    </div>
+
+    <div class="botones-modal">
+      <button
+        type="button"
+        class="btn-cancelar"
+        (click)="cerrarModalEliminar()"
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn-confirmar-delete"
+        (click)="confirmarEliminacion()"
+      >
+        Sí, Eliminar
+      </button>
+    </div>
+  </div>
+</div>
